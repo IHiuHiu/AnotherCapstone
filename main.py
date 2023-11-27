@@ -17,9 +17,9 @@ if "messages" not in st.session_state: # Initialize the chat message history
     st.session_state.messages = [
         {"role": "assistant", "content": "Tell me about your problems"}
     ]
+prompt := st.chat_input("Your question"): # Prompt for user input and save to chat history
 def get_response():
-    if prompt := st.chat_input("Your question"): # Prompt for user input and save to chat history
-        return prompt
+    return prompt
 
 def write_response(out):
     with st.chat_message("assistant"):
