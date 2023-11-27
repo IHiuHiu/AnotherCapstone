@@ -1,5 +1,6 @@
 !git clone https://github.com/itachi9604/healthcare-chatbot.git
 !pip install -r /content/healthcare-chatbot/requirements.txt
+!pip install streamlit
 import re
 import pandas as pd
 import pyttsx3
@@ -11,8 +12,10 @@ from sklearn.model_selection import cross_val_score
 from sklearn.svm import SVC
 import csv
 import warnings
+import streamlit as st
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
+st.write("Loading data...")
 training = pd.read_csv('/content/healthcare-chatbot/Data/Training.csv')
 testing= pd.read_csv('/content/healthcare-chatbot/Data/Testing.csv')
 cols= training.columns
