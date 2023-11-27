@@ -169,7 +169,7 @@ def tree_to_code(tree, feature_names):
 
     while True:
 
-        write_response("\nEnter the symptom you are experiencing  \t\t",end="->")
+        write_response("Enter the symptom you are experiencing")
         disease_input = get_response()
         conf,cnf_dis=check_pattern(chk_dis,disease_input)
         if conf==1:
