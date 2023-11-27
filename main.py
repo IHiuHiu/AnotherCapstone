@@ -1,7 +1,3 @@
-pip install git
-!git clone https://github.com/itachi9604/healthcare-chatbot.git
-!pip install -r /content/healthcare-chatbot/requirements.txt
-!pip install streamlit
 import re
 import pandas as pd
 import pyttsx3
