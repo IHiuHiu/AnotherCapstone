@@ -194,6 +194,7 @@ def tree_to_code(tree, feature_names):
             #     break
         else:
             write_response("Enter valid symptom.")
+            write_response(disease_input)
 
     while True:
         try:
