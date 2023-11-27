@@ -13,8 +13,8 @@ import streamlit as st
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 st.write("Loading data...")
-training = pd.read_csv('/content/healthcare-chatbot/Data/Training.csv')
-testing= pd.read_csv('/content/healthcare-chatbot/Data/Testing.csv')
+training = pd.read_csv('./Data/Training.csv')
+testing= pd.read_csv('./Data/Testing.csv')
 cols= training.columns
 cols= cols[:-1]
 x = training[cols]
