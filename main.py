@@ -280,5 +280,6 @@ for message in st.session_state.messages: # Display the prior chat messages
 
 if st.session_state.messages[-1]["role"] != "assistant":
     with st.chat_message("assistant"):
-        with st.spinner("Thinking..."): # Add response to message history
+        st.spinner("Thinking...") # Add response to message history
+            
 tree_to_code(clf,cols)
