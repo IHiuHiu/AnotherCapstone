@@ -12,6 +12,21 @@ import warnings
 import streamlit as st
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
+st.header("-----------------------------------HealthCare ChatBot-----------------------------------")
+if "messages" not in st.session_state: # Initialize the chat message history
+    st.session_state.messages = [
+        {"role": "assistant", "content": "Tell me about your problems"}
+    ]
+def get_response():
+    if prompt := st.chat_input("Your question"): # Prompt for user input and save to chat history
+        return prompt
+
+def write_response(out):
+    with st.chat_message("assistant"):
+        with st.spinner("Thinking..."):
+            st.write(out)
+            message = {"role": "assistant", "content": out}
+            st.session_state.messages.append(message)
 st.write("Loading data...")
 training = pd.read_csv('./Data/Training.csv')
 testing= pd.read_csv('./Data/Testing.csv')
@@ -75,9 +90,9 @@ def calc_condition(exp,days):
     for item in exp:
          sum=sum+severityDictionary[item]
     if((sum*days)/(len(exp)+1)>13):
-        print("You should take the consultation from doctor. ")
+        write_response("You should take the consultation from doctor. ")
     else:
-        print("It might not be that bad but you should take precautions.")
+        write_response("It might not be that bad but you should take precautions.")
 
 def getDescription():
     global description_list
@@ -110,12 +125,6 @@ def getprecautionDict():
         for row in csv_reader:
             _prec={row[0]:[row[1],row[2],row[3],row[4]]}
             precautionDictionary.update(_prec)
-
-def getInfo():
-    print("-----------------------------------HealthCare ChatBot-----------------------------------")
-    print("\nYour Name? \t\t\t\t",end="->")
-    name=input("")
-    print("Hello, ",name)
 
 def check_pattern(dis_list,inp):
     pred_list=[]
@@ -160,16 +169,16 @@ def tree_to_code(tree, feature_names):
 
     while True:
 
-        print("\nEnter the symptom you are experiencing  \t\t",end="->")
-        disease_input = input("")
+        write_response("\nEnter the symptom you are experiencing  \t\t",end="->")
+        disease_input = get_response()
         conf,cnf_dis=check_pattern(chk_dis,disease_input)
         if conf==1:
-            print("searches related to input: ")
+            write_response("searches related to input: ")
             for num,it in enumerate(cnf_dis):
                 print(num,")",it)
             if num!=0:
-                print(f"Select the one you meant (0 - {num}):  ", end="")
-                conf_inp = int(input(""))
+                write_response(f"Select the one you meant (0 - {num}):  ", end="")
+                conf_inp = int(get_response())
             else:
                 conf_inp=0
 
@@ -180,14 +189,15 @@ def tree_to_code(tree, feature_names):
             # if(conf_inp=="yes"):
             #     break
         else:
-            print("Enter valid symptom.")
+            write_response("Enter valid symptom.")
 
     while True:
         try:
-            num_days=int(input("Okay. From how many days ? : "))
+            write_response("Okay. From how many days? :")
+            num_days=int(get_response())
             break
         except:
-            print("Enter valid input.")
+            write_response("Enter valid input.")
     def recurse(node, depth):
         indent = "  " * depth
         if tree_.feature[node] != _tree.TREE_UNDEFINED:
@@ -216,13 +226,14 @@ def tree_to_code(tree, feature_names):
             symptoms_exp=[]
             for syms in list(symptoms_given):
                 inp=""
-                print(syms,"? : ",end='')
+                output = {syms + "? : "}
+                write_response(output)
                 while True:
-                    inp=input("")
+                    inp=get_response()
                     if(inp=="yes" or inp=="no"):
                         break
                     else:
-                        print("provide proper answers i.e. (yes/no) : ",end="")
+                        write_response("Provide proper answers i.e. (yes/no) : ")
                 if(inp=="yes"):
                     symptoms_exp.append(syms)
 
@@ -230,29 +241,46 @@ def tree_to_code(tree, feature_names):
             # print(second_prediction)
             calc_condition(symptoms_exp,num_days)
             if(present_disease[0]==second_prediction[0]):
-                print("You may have ", present_disease[0])
-                print(description_list[present_disease[0]])
+                output = {"You may have " + present_disease[0]}
+                write_response(output)
+                write_response(description_list[present_disease[0]])
 
                 # readn(f"You may have {present_disease[0]}")
                 # readn(f"{description_list[present_disease[0]]}")
 
             else:
-                print("You may have ", present_disease[0], "or ", second_prediction[0])
-                print(description_list[present_disease[0]])
-                print(description_list[second_prediction[0]])
+                write_response("You may have ", present_disease[0], "or ", second_prediction[0])
+                write_response(description_list[present_disease[0]])
+                write_response(description_list[second_prediction[0]])
 
             # print(description_list[present_disease[0]])
             precution_list=precautionDictionary[present_disease[0]]
-            print("Take following measures : ")
+            write_response("Take following measures : ")
             for  i,j in enumerate(precution_list):
-                print(i+1,")",j)
+                write_response(i+1,")",j)
 
             # confidence_level = (1.0*len(symptoms_present))/len(symptoms_given)
             # print("confidence level is " + str(confidence_level))
 
     recurse(0, 1)
+
 getSeverityDict()
 getDescription()
 getprecautionDict()
-getInfo()
+
+        
+if prompt := st.chat_input("Your question"): # Prompt for user input and save to chat history
+    st.session_state.messages.append({"role": "user", "content": prompt})
+
+for message in st.session_state.messages: # Display the prior chat messages
+    with st.chat_message(message["role"]):
+        st.write(message["content"])
+
+if st.session_state.messages[-1]["role"] != "assistant":
+    with st.chat_message("assistant"):
+        with st.spinner("Thinking..."):
+            response = str(chatbot_response(prompt))
+            st.write(response)
+            message = {"role": "assistant", "content": response}
+            st.session_state.messages.append(message) # Add response to message history
 tree_to_code(clf,cols)
