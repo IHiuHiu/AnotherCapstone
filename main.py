@@ -12,7 +12,7 @@ import warnings
 import streamlit as st
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-st.header("-----------------------------------HealthCare ChatBot-----------------------------------")
+st.header("----------HealthCare ChatBot----------")
 if "messages" not in st.session_state: # Initialize the chat message history
     st.session_state.messages = [
         {"role": "assistant", "content": "Tell me about your problems"}
