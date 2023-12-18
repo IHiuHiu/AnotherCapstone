@@ -153,7 +153,7 @@ def tree_to_code(tree, feature_names):
     if "initial_disease" not in st.session_state:
         st.session_state.initial_disease = "None"
     if prompt0 := st.text_input("Enter the symptom you are experiencing", key = "first"): # get initial symptom
-        if not st.session.state.first:
+        if not st.session_state.first:
             st.stop()
         else:
             st.experimental_rerun()
@@ -175,7 +175,6 @@ def tree_to_code(tree, feature_names):
                 print("Enter valid symptom.")
                 st.session_state.initial_disease = "None"
                 
-    while True:
         if "num_days" not in st.session_state:
             st.session_state.num_days = "None"
         if prompt1 :=st.number_input('Okay, for how many days has it been?', value=None, key="days"):
