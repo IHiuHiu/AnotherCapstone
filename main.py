@@ -36,8 +36,8 @@ y = training['prognosis']
 y1= y
 
 def get_response():
-    while st.session_state.messages[-1]["role"] == "assistant":
-        print("waiting...")
+    while st.session_state.messages[-1]["role"] != "user":
+        counter=0
     response = st.session_state.messages[-1]["content"]
     return response
         
