@@ -205,7 +205,7 @@ def tree_to_code(tree, feature_names):
         else:
             st.session_state.present_disease = print_disease(tree_.value[node])
             red_cols = reduced_data.columns
-            st.session_state.symptoms_given = red_cols[reduced_data.loc[present_disease].values[0].nonzero()]
+            st.session_state.symptoms_given = red_cols[reduced_data.loc[st.session_state.present_disease].values[0].nonzero()]
             
             while st.session_state.count < len(st.session_state.symptoms_given):
                 question = "Are you experiencing any " + st.session_state.symptoms_given[int(st.session_state.count)] + " ?"
