@@ -38,6 +38,7 @@ def write_response(out):
             message = {"role": "assistant", "content": out}
             st.session_state.messages.append(message)
 
+
 def reset_response():
     st.session_state.user_input = "None"
     st.session_state.new_mess = 0
@@ -97,6 +98,7 @@ precautionDictionary=dict()
 
 symptoms_dict = {}
 
+
 for index, symptom in enumerate(x):
        symptoms_dict[symptom] = index
 def calc_condition(exp,days):
@@ -143,7 +145,6 @@ def getprecautionDict():
             _prec={row[0]:[row[1],row[2],row[3],row[4]]}
             precautionDictionary.update(_prec)
 
-@st.cache_data
 def check_pattern(dis_list,inp):
     pred_list=[]
     inp=inp.replace(' ','_')
@@ -190,20 +191,21 @@ def tree_to_code(tree, feature_names):
         write_response("Enter the symptom you are experiencing")
         while st.session_state.new_mess == 0:
             counter=0
-        disease_input = st.session_state.user_input
-        reset_response()
+        disease_input = str(st.session_state.user_input)
         conf,cnf_dis=check_pattern(chk_dis,disease_input)
         if conf==1:
-            write_response("searches related to input: ")
+            write_response("Searches related to input: ")
             message = ''
             for num,it in enumerate(cnf_dis):
                 message = message + str(num) + ")" + it
             write_response(message)
             if num!=0:
-                message = "Select the one you meant (0 - " + num +"): "
+                message = "Select the one you meant (0 - " + str(num) +"): "
                 write_response(message)
-                conf_inp = int(st.session_state.user_input)
                 reset_response()
+                while st.session_state.new_mess == 0:
+                    counter=0
+                conf_inp = int(st.session_state.user_input)
             else:
                 conf_inp=0
             disease_input=cnf_dis[conf_inp]
