@@ -188,9 +188,8 @@ def tree_to_code(tree, feature_names):
 
     chk_dis=",".join(feature_names).split(",")
     symptoms_present = []
-
+    write_response("Enter the symptom you are experiencing")
     while st.session_state.stage == 0:
-        write_response("Enter the symptom you are experiencing")
         while st.session_state.new_mess == 0:
             counter=0
         if disease_input := str(st.session_state.user_input):
@@ -203,18 +202,17 @@ def tree_to_code(tree, feature_names):
                 st.session_state.stage = 1
                 st.session_state.symptom_list.append(disease_input)
 
-    while  st.session_state.stage == 1:
-        try:
-            write_response("Okay. From how many days? :")
-            while st.session_state.new_mess ==0:
-                counter =0
-            num_days=int(st.session_state.user_input)
-            st.session_state.stage =2
-            reset_response()
-            break
-        except:
-            write_response("Enter valid input.")
+    write_response("Okay. From how many days? :")
+    if  st.session_state.stage == 1:
+        while st.session_state.new_mess ==0:
+            counter =0
+        num_days=int(st.session_state.user_input)
+        st.session_state.stage =2
+        reset_response()
 
+    write_response("Here")
+    while True:
+        counter=0
     def recurse(node, depth):
         indent = "  " * depth
         if tree_.feature[node] != _tree.TREE_UNDEFINED:
