@@ -208,18 +208,19 @@ def tree_to_code(tree, feature_names):
             st.session_state.present_disease = present_disease
             st.session_state.symptoms_given = red_cols[reduced_data.loc[present_disease].values[0].nonzero()]
             
-            while st.session_state.count < len(st.session_state.symptoms_given):
+            if st.session_state.count < len(st.session_state.symptoms_given):
                 question = "Are you experiencing any " + st.session_state.symptoms_given[int(st.session_state.count)] + " ?"
                 new_key = "symptom num "+ str(st.session_state.count)
-                if ans:=st.text_input(question, key = new_key):
-                    if not st.session_state.new_key:
+                if ans:=st.text_radio(question, key = new_key, options = ["yes" , "no"], value = "None"):
+                    if not st.session_state:
                         st.stop()
                     else:
-                        st.rerun()
                         if ans == "yes":
-                            st.session_state.symptoms_exp.append(st.session_state.symptoms_given[x])
+                            st.session_state.symptoms_exp.append(st.session_state.symptoms_given[st.session_state.count])
                         st.session_state.count= int(st.session_state.count) +1
-                            
+                        st.rerun()
+
+            
             st.session_state.second_prediction = sec_predict(st.session_state.symptoms_exp)
 
             calc_condition(st.session_state.symptoms_exp,st.session_state.num_days)
