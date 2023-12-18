@@ -175,14 +175,14 @@ def tree_to_code(tree, feature_names):
                 print("Enter valid symptom.")
                 st.session_state.initial_disease = "None"
             
-        if "num_days" not in st.session_state:
-            st.session_state.num_days = "None"
-        if prompt1 := st.number_input('Okay, for how many days has it been?', value=None, key="days"):
-            if not st.session_state.days:
-                st.stop()
-            else:
-                st.rerun()
-                st.session_state.num_days = prompt1
+    if "num_days" not in st.session_state:
+        st.session_state.num_days = "None"
+    if prompt1 := st.number_input('Okay, for how many days has it been?', value=None, key="days"):
+        if not st.session_state.days:
+            st.stop()
+        else:
+            st.rerun()
+            st.session_state.num_days = prompt1
     if "symptoms_exp" not in st.session_state:
         st.session_state.symptoms_exp = []
         st.session_state.symptoms_given = []
