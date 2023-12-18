@@ -142,6 +142,10 @@ def print_disease(node):
     disease = le.inverse_transform(val[0])
     return list(map(lambda x:x.strip(),list(disease)))
 
+getSeverityDict()
+getDescription()
+getprecautionDict()
+
 def tree_to_code(tree, feature_names):
     tree_ = tree.tree_
     feature_name = [
@@ -239,10 +243,5 @@ def tree_to_code(tree, feature_names):
                 st.markdown(str(i+1) + ") " + j)
     
     recurse(0, 1)
-
-
-getSeverityDict()
-getDescription()
-getprecautionDict()
             
 tree_to_code(clf,cols)
