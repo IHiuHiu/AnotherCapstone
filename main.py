@@ -173,7 +173,7 @@ def tree_to_code(tree, feature_names):
             counter=counter+1
         disease_input = str(prompt)
         if(disease_input != "None"):
-        conf,cnf_dis=check_pattern(chk_dis,disease_input)
+            conf,cnf_dis=check_pattern(chk_dis,disease_input)
         if conf==1:
             write_response("searches related to input: ")
             for num,it in enumerate(cnf_dis):
