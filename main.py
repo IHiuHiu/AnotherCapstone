@@ -58,10 +58,6 @@ importances = clf.feature_importances_
 indices = np.argsort(importances)[::-1]
 features = cols
 
-severityDictionary=dict()
-description_list = dict()
-precautionDictionary=dict()
-
 symptoms_dict = {}
 
 
@@ -79,17 +75,18 @@ for index, symptom in enumerate(x):
 
 @st.cache_data
 def getDescription():
-    global description_list
+    description_list = dict()
     with open('./MasterData/symptom_Description.csv') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
         for row in csv_reader:
             _description={row[0]:row[1]}
             description_list.update(_description)
+    return description_list
 
 @st.cache_data
 def getSeverityDict():
-    global severityDictionary
+    severityDictionary = dict()
     with open('./MasterData/Symptom_severity.csv') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
@@ -99,16 +96,18 @@ def getSeverityDict():
                 severityDictionary.update(_diction)
         except:
             pass
+    return severityDictionary
 
 @st.cache_data
 def getprecautionDict():
-    global precautionDictionary
+    precautionDictionary = dict()
     with open('./MasterData/symptom_precaution.csv') as csv_file:
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
         for row in csv_reader:
             _prec={row[0]:[row[1],row[2],row[3],row[4]]}
             precautionDictionary.update(_prec)
+    return precautionDictionary
 
 
 def check_pattern(dis_list,inp):
@@ -142,9 +141,9 @@ def print_disease(node):
     disease = le.inverse_transform(val[0])
     return list(map(lambda x:x.strip(),list(disease)))
 
-getSeverityDict()
-getDescription()
-getprecautionDict()
+severityDictionary = getSeverityDict()
+description_list = getDescription()
+precautionDictionary = getprecautionDict()
 
 def tree_to_code(tree, feature_names):
     tree_ = tree.tree_
