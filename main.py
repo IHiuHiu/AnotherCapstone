@@ -17,10 +17,8 @@ if "messages" not in st.session_state: # Initialize the chat message history
     st.session_state.messages = [
         {"role": "assistant", "content": "Tell me about your problems"}
     ]
-def get_response():
-    if prompt := st.chat_input("Your question"):
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        return prompt
+if prompt := st.chat_input("Your question"):
+    st.session_state.messages.append({"role": "user", "content": prompt})
 
 def write_response(out):
     with st.chat_message("assistant"):
@@ -172,7 +170,8 @@ def tree_to_code(tree, feature_names):
 
         write_response("Enter the symptom you are experiencing")
         while True:
-            disease_input = str(get_response())
+            if prompt:
+                disease_input = str(prompt)
             if(disease_input != "None"):
                 break
         conf,cnf_dis=check_pattern(chk_dis,disease_input)
@@ -182,7 +181,8 @@ def tree_to_code(tree, feature_names):
                 print(num,")",it)
             if num!=0:
                 write_response(f"Select the one you meant (0 - {num}):  ", end="")
-                conf_inp = int(get_response())
+                if prompt:
+                    conf_inp = int(prompt)
             else:
                 conf_inp=0
 
@@ -198,7 +198,8 @@ def tree_to_code(tree, feature_names):
     while True:
         try:
             write_response("Okay. From how many days? :")
-            num_days=int(get_response())
+            if prompt:
+                num_days=int(prompt)
             break
         except:
             write_response("Enter valid input.")
@@ -233,7 +234,8 @@ def tree_to_code(tree, feature_names):
                 output = {syms + "? : "}
                 write_response(output)
                 while True:
-                    inp=get_response()
+                    if prompt:
+                        inp=str(prompt)
                     if(inp=="yes" or inp=="no"):
                         break
                     else:
