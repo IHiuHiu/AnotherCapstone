@@ -193,8 +193,8 @@ def tree_to_code(tree, feature_names):
         write_response("Enter the symptom you are experiencing")
         while st.session_state.new_mess == 0:
             counter=0
-        disease_input = str(st.session_state.user_input)
-        conf,cnf_dis=check_pattern(chk_dis,disease_input)
+        if disease_input := str(st.session_state.user_input):
+            conf,cnf_dis=check_pattern(chk_dis,disease_input)
         reset_response()
         for num,it in enumerate(cnf_dis):
             if num!=0:
