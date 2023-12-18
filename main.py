@@ -154,8 +154,8 @@ def tree_to_code(tree, feature_names):
     while True:
         if "initial_disease" not in st.session_state:
             st.session_state.initial_disease = "None"
-        if prompt0 := st.text_input("Enter the symptom you are experiencing"): # get initial symptom
-            disease_input = str(prompt)
+        if prompt0 := st.text_input("Enter the symptom you are experiencing", key = "first"): # get initial symptom
+            disease_input = str(prompt0)
             conf,cnf_dis=check_pattern(chk_dis,disease_input)
             if conf==1:
                 poss_list = []
@@ -202,12 +202,13 @@ def tree_to_code(tree, feature_names):
             st.session_state.present_disease = print_disease(tree_.value[node])
             red_cols = reduced_data.columns
             st.session_state.symptoms_given = red_cols[reduced_data.loc[present_disease].values[0].nonzero()]
-            for syms in st.session_state.symptoms_given:
-                question = "Are you experiencing any " + str(syms) + " ?"
+            for x in len(st.session_state.symptoms_given):
+                question = "Are you experiencing any " + st.session_state.symptoms_given[x] + " ?"
                 while True:
-                    if ans:=st.text_input(question):
+                    new_key = "symptom num "+ x
+                    if ans:=st.text_input(question, key = new_key):
                         if ans == "yes":
-                            st.session_state.symptoms_exp.append(syms)
+                            st.session_state.symptoms_exp.append(st.session_state.symptoms_given[x])
                         elif ans == "no":
                             break
                             
