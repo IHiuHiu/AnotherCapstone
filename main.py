@@ -34,7 +34,6 @@ def create_model():
     le.fit(y)
     y = le.transform(y)
 
-    st.write("Training model...")
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.33, random_state=42)
     testx    = testing[cols]
     testy    = testing['prognosis']
@@ -167,11 +166,11 @@ def tree_to_code(tree, feature_names):
                     if num!=0:
                         while True:
                             if prompt2 := st.radio("I found some similar result, is there anything you have?", key="reselect_disease", options=poss_list):
-                            st.session_state.initial_disease = prompt2
-                            break
-                    break
-                else:
-                    st.session_state.initial_disease = poss_list[0]
+                                st.session_state.initial_disease = prompt2
+                                break
+                        break
+                    else:
+                        st.session_state.initial_disease = poss_list[0]
             else:
                 print("Enter valid symptom.")
                 st.session_state.initial_disease = "None"
