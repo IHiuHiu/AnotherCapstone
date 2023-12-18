@@ -178,7 +178,7 @@ def tree_to_code(tree, feature_names):
     while True:
         if "num_days" not in st.session_state:
             st.session_state.num_days = "None"
-        if prompt1 :=st.number_input('Okay, for how many days has it been?', value=None):
+        if prompt1 :=st.number_input('Okay, for how many days has it been?', value=None, key="days"):
             st.session_state.num_days = prompt1
             break
     if "symptoms_exp" not in st.session_state:
