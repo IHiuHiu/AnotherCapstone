@@ -234,12 +234,12 @@ def tree_to_code(tree, feature_names):
                     st.markdown(description_list[st.session_state.present_disease[0]])
 
                 else:
-                    print("You may have " + st.session_state.present_disease[0]+ " or " + st.session_state.second_prediction[0])
-                    print(description_list[st.session_state.present_disease[0]])
-                    print(description_list[st.session_state.second_prediction[0]])
+                    st.markdown("You may have " + st.session_state.present_disease[0]+ " or " + st.session_state.second_prediction[0])
+                    st.markdown(description_list[st.session_state.present_disease[0]])
+                    st.markdown(description_list[st.session_state.second_prediction[0]])
 
                 precution_list=precautionDictionary[st.session_state.present_disease[0]]
-                print("Take following measures : ")
+                st.markdown("Take following measures : ")
                 for  i,j in enumerate(precution_list):
                     st.markdown(str(i+1) + ") " + j)
     
