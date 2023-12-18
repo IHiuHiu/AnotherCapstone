@@ -17,7 +17,7 @@ if "messages" not in st.session_state: # Initialize the chat message history
     st.session_state.messages = [
         {"role": "assistant", "content": "Tell me about your problems"}
     ]
-if prompt := st.chat_input("Your question"):
+if prompt := st.chat_input(placeholder = "Your question", on_submit = get_response):
     st.session_state.messages.append({"role": "user", "content": prompt})
 
 def write_response(out):
@@ -26,6 +26,18 @@ def write_response(out):
             st.write(out)
             message = {"role": "assistant", "content": out}
             st.session_state.messages.append(message)
+user_input = "None"
+new_mess = 0
+def get_response():
+    global user_input
+    global new_mess
+    user_input = st.session_state.messages[-1]["content"]
+    new_mess = 1
+def reset_response():
+    global user_input
+    global new_mess
+    user_input = "None"
+    new_mess = 0
 
 training = pd.read_csv('./Data/Training.csv')
 testing= pd.read_csv('./Data/Testing.csv')
@@ -34,12 +46,6 @@ cols= cols[:-1]
 x = training[cols]
 y = training['prognosis']
 y1= y
-
-def get_response():
-    while st.session_state.messages[-1]["role"] != "user":
-        counter=0
-    response = st.session_state.messages[-1]["content"]
-    return response
         
 reduced_data = training.groupby(training['prognosis']).max()
 
@@ -99,6 +105,7 @@ def calc_condition(exp,days):
     else:
         write_response("It might not be that bad but you should take precautions.")
 
+@st.cache_data
 def getDescription():
     global description_list
     with open('./MasterData/symptom_Description.csv') as csv_file:
@@ -108,6 +115,7 @@ def getDescription():
             _description={row[0]:row[1]}
             description_list.update(_description)
 
+@st.cache_data
 def getSeverityDict():
     global severityDictionary
     with open('./MasterData/Symptom_severity.csv') as csv_file:
@@ -121,6 +129,7 @@ def getSeverityDict():
         except:
             pass
 
+@st.cache_data
 def getprecautionDict():
     global precautionDictionary
     with open('./MasterData/symptom_precaution.csv') as csv_file:
@@ -131,6 +140,7 @@ def getprecautionDict():
             _prec={row[0]:[row[1],row[2],row[3],row[4]]}
             precautionDictionary.update(_prec)
 
+@st.cache_data
 def check_pattern(dis_list,inp):
     pred_list=[]
     inp=inp.replace(' ','_')
@@ -141,6 +151,7 @@ def check_pattern(dis_list,inp):
         return 1,pred_list
     else:
         return 0,[]
+@st.cache_data
 def sec_predict(symptoms_exp):
     df = pd.read_csv('/content/healthcare-chatbot/Data/Training.csv')
     X = df.iloc[:, :-1]
@@ -174,8 +185,10 @@ def tree_to_code(tree, feature_names):
 
     while True:
         write_response("Enter the symptom you are experiencing")
-        user_res = get_response()
-        disease_input = str(user_res)
+        while(new_mess == 0):
+            counter = 0
+        disease_input = str(user_input)
+        reset_response()
         conf,cnf_dis=check_pattern(chk_dis,disease_input)
         if conf==1:
             write_response("searches related to input: ")
@@ -183,8 +196,10 @@ def tree_to_code(tree, feature_names):
                 print(num,")",it)
             if num!=0:
                 print(f"Select the one you meant (0 - {num}):  ", end="")
-                if prompt:
-                    conf_inp = int(prompt)
+                while(new_mess == 0):
+                    counter = 0
+                conf_inp = int(user_input)
+                reset_response()
             else:
                 conf_inp=0
 
@@ -200,8 +215,10 @@ def tree_to_code(tree, feature_names):
     while True:
         try:
             write_response("Okay. From how many days? :")
-            user_res = get_response()
-            num_days=int(user_res)    
+            while new_mess ==0:
+                counter =0
+            num_days=int(user_input)
+            reset_response()
         except:
             write_response("Enter valid input.")
     def recurse(node, depth):
@@ -228,15 +245,17 @@ def tree_to_code(tree, feature_names):
             # if len(dis_list)!=0:
             #     print("symptoms present  " + str(list(symptoms_present)))
             # print("symptoms given "  +  str(list(symptoms_given)) )
-            print("Are you experiencing any ")
+            write_response("Are you experiencing any ")
             symptoms_exp=[]
             for syms in list(symptoms_given):
                 inp=""
                 output = {syms + "? : "}
                 write_response(output)
                 while True:
-                    if prompt:
-                        inp=str(prompt)
+                    while new_mess==0:
+                        counter=0
+                    inp = user_input
+                    reset_response()
                     if(inp=="yes" or inp=="no"):
                         break
                     else:
