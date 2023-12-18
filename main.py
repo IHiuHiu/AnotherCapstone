@@ -17,13 +17,16 @@ if "messages" not in st.session_state: # Initialize the chat message history
     st.session_state.messages = [
         {"role": "assistant", "content": "Tell me about your problems"}
     ]
-user_input = "None"
-new_mess = 0
+if "user_input" not in st.session_state:
+    st.session_state.user_input = "None"
+if "new_mess" not in st.session_state:
+    st.session_state.new_mess = 0
+if "stage" not in st.session_state:
+    st.session_state.stage = 0
+    
 def get_response():
-    global user_input
-    user_input = prompt
-    global new_mess
-    new_mess = 1
+    st.session_state.user_input = prompt
+    st.session_state.new_mess = 1
 
 if prompt := st.chat_input(placeholder = "Your question", on_submit = get_response):
     st.session_state.messages.append({"role": "user", "content": prompt})
@@ -36,10 +39,8 @@ def write_response(out):
             st.session_state.messages.append(message)
 
 def reset_response():
-    global user_input
-    user_input = "None"
-    global new_mess
-    new_mess = 0
+    st.session_state.user_input = "None"
+    st.session_state.new_mess = 0
 
 training = pd.read_csv('./Data/Training.csv')
 testing= pd.read_csv('./Data/Testing.csv')
@@ -185,28 +186,26 @@ def tree_to_code(tree, feature_names):
     chk_dis=",".join(feature_names).split(",")
     symptoms_present = []
 
-    while True:
+    while st.session_state.stage == 0:
         write_response("Enter the symptom you are experiencing")
-        while new_mess == 0:
-            counter = 0
-        disease_input = str(user_input)
-        write_response(user_input)
+        while st.session_state.new_mess == 0:
+            counter=0
+        disease_input = st.session_state.user_input
         reset_response()
-        write_response(user_input)
         conf,cnf_dis=check_pattern(chk_dis,disease_input)
         if conf==1:
             write_response("searches related to input: ")
+            message = ''
             for num,it in enumerate(cnf_dis):
-                print(num,")",it)
+                message = message + num + ")" + it
+            write_response(message)
             if num!=0:
-                print(f"Select the one you meant (0 - {num}):  ", end="")
-                while new_mess == 0:
-                    counter = 0
-                conf_inp = int(user_input)
+                message = "Select the one you meant (0 - " + num +"): "
+                write_response(message)
+                conf_inp = int(st.session_state.user_input)
                 reset_response()
             else:
                 conf_inp=0
-
             disease_input=cnf_dis[conf_inp]
             break
             # print("Did you mean: ",cnf_dis,"?(yes/no) :",end="")
