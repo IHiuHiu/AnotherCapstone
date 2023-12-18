@@ -178,9 +178,9 @@ def tree_to_code(tree, feature_names):
         if conf==1:
             write_response("searches related to input: ")
             for num,it in enumerate(cnf_dis):
-                write_response(num,")",it)
+                print(num,")",it)
             if num!=0:
-                write_response(f"Select the one you meant (0 - {num}):  ", end="")
+                print(f"Select the one you meant (0 - {num}):  ", end="")
                 if prompt:
                     conf_inp = int(prompt)
             else:
