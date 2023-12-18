@@ -22,7 +22,7 @@ new_mess = 0
 def get_response():
     global user_input
     global new_mess
-    user_input = st.session_state.messages[-1]["content"]
+    user_input = prompt
     new_mess = 1
 
 if prompt := st.chat_input(placeholder = "Your question", on_submit = get_response):
