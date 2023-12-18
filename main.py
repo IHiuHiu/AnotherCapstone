@@ -197,7 +197,7 @@ def tree_to_code(tree, feature_names):
             conf,cnf_dis=check_pattern(chk_dis,disease_input)
         reset_response()
         for num,it in enumerate(cnf_dis):
-            if num!=0:
+            if conf!=1:
                 write_response("Please enter valid symptom")
             else:
                 st.session_state.stage = 1
@@ -206,10 +206,12 @@ def tree_to_code(tree, feature_names):
     while  st.session_state.stage == 1:
         try:
             write_response("Okay. From how many days? :")
-            while nst.session_state.new_mess ==0:
+            while st.session_state.new_mess ==0:
                 counter =0
-            num_days=int(user_input)
+            num_days=int(st.session_state.user_input)
+            st.session_state.stage =2
             reset_response()
+            break
         except:
             write_response("Enter valid input.")
 
