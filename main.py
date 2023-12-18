@@ -109,7 +109,6 @@ def getprecautionDict():
             precautionDictionary.update(_prec)
     return precautionDictionary
 
-
 def check_pattern(dis_list,inp):
     pred_list=[]
     inp=inp.replace(' ','_')
@@ -145,11 +144,15 @@ severityDictionary = getSeverityDict()
 description_list = getDescription()
 precautionDictionary = getprecautionDict()
 
+#def input_first_symptom():
+#    st.session_state
+
 def tree_to_code(tree, feature_names):
-    tree_ = tree.tree_
+    if "tree" not in session_state:
+        st.session_state.tree = tree.tree_
     feature_name = [
         feature_names[i] if i != _tree.TREE_UNDEFINED else "undefined!"
-        for i in tree_.feature
+        for i in st.session_state.tree.feature
     ]
 
     chk_dis=",".join(feature_names).split(",")
@@ -193,19 +196,19 @@ def tree_to_code(tree, feature_names):
         st.session_state.count = 0
     def recurse(node, depth):
         indent = "  " * depth
-        if tree_.feature[node] != _tree.TREE_UNDEFINED:
+        if st.session_state.tree.feature[node] != _tree.TREE_UNDEFINED:
             name = feature_name[node]
-            threshold = tree_.threshold[node]
+            threshold = st.session_state.tree.threshold[node]
             if name == st.session_state.initial_disease:
                 val = 1
             else:
                 val = 0
             if  val <= threshold:
-                recurse(tree_.children_left[node], depth + 1)
+                recurse(st.session_state.tree.children_left[node], depth + 1)
             else:
-                recurse(tree_.children_right[node], depth + 1)
+                recurse(st.session_state.tree.children_right[node], depth + 1)
         else:
-            present_disease = print_disease(tree_.value[node])
+            present_disease = print_disease(st.session_state.tree.value[node])
             red_cols = reduced_data.columns
             st.session_state.present_disease = present_disease
             st.session_state.symptoms_given = red_cols[reduced_data.loc[present_disease].values[0].nonzero()]
@@ -221,8 +224,6 @@ def tree_to_code(tree, feature_names):
                             st.session_state.symptoms_exp.append(st.session_state.symptoms_given[st.session_state.count])
                         st.session_state.count= int(st.session_state.count) +1
                         
-
-            
             st.session_state.second_prediction = sec_predict(st.session_state.symptoms_exp)
 
             #calc_condition(st.session_state.symptoms_exp,st.session_state.num_days)
