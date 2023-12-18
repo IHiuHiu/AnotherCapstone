@@ -195,7 +195,6 @@ def tree_to_code(tree, feature_names):
         st.session_state.second_prediction = []
         st.session_state.count = 0
     def recurse(node, depth):
-        indent = "  " * depth
         if st.session_state.tree.feature[node] != _tree.TREE_UNDEFINED:
             name = feature_name[node]
             threshold = st.session_state.tree.threshold[node]
@@ -216,30 +215,28 @@ def tree_to_code(tree, feature_names):
             if st.session_state.count < len(st.session_state.symptoms_given):
                 question = "Are you experiencing any " + st.session_state.symptoms_given[int(st.session_state.count)] + " ?"
                 new_key = "symptom num "+ str(st.session_state.count)
-                if ans:=st.radio(question, key = new_key, options = ["yes" , "no"]):
-                    if not st.session_state:
-                        st.stop()
-                    else:
-                        if ans == "yes":
-                            st.session_state.symptoms_exp.append(st.session_state.symptoms_given[st.session_state.count])
-                        st.session_state.count= int(st.session_state.count) +1
-                        
-            st.session_state.second_prediction = sec_predict(st.session_state.symptoms_exp)
+                if ans:=st.radio(question, key = new_key, options = ["", "yes" , "no"]):
+                    if ans == "yes":
+                        st.session_state.symptoms_exp.append(st.session_state.symptoms_given[st.session_state.count])
+                    st.session_state.count= int(st.session_state.count) +1
+                    
+            if st.session_state.count >= len(st.session_state.symptoms_given):            
+                st.session_state.second_prediction = sec_predict(st.session_state.symptoms_exp)
 
             #calc_condition(st.session_state.symptoms_exp,st.session_state.num_days)
-            if(st.session_state.present_disease[0] ==st.session_state.second_prediction[0]):
-                st.markdown("You may have " + st.session_state.present_disease [0])
-                st.markdown(description_list[st.session_state.present_disease[0]])
+                if(st.session_state.present_disease[0] ==st.session_state.second_prediction[0]):
+                    st.markdown("You may have " + st.session_state.present_disease [0])
+                    st.markdown(description_list[st.session_state.present_disease[0]])
 
-            else:
-                print("You may have " + st.session_state.present_disease[0]+ " or " + st.session_state.second_prediction[0])
-                print(description_list[st.session_state.present_disease[0]])
-                print(description_list[st.session_state.second_prediction[0]])
+                else:
+                    print("You may have " + st.session_state.present_disease[0]+ " or " + st.session_state.second_prediction[0])
+                    print(description_list[st.session_state.present_disease[0]])
+                    print(description_list[st.session_state.second_prediction[0]])
 
-            precution_list=precautionDictionary[st.session_state.present_disease[0]]
-            print("Take following measures : ")
-            for  i,j in enumerate(precution_list):
-                st.markdown(str(i+1) + ") " + j)
+                precution_list=precautionDictionary[st.session_state.present_disease[0]]
+                print("Take following measures : ")
+                for  i,j in enumerate(precution_list):
+                    st.markdown(str(i+1) + ") " + j)
     
     recurse(0, 1)
             
