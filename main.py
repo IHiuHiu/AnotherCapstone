@@ -68,14 +68,14 @@ symptoms_dict = {}
 for index, symptom in enumerate(x):
        symptoms_dict[symptom] = index
 
-def calc_condition(exp,days):
-    sum=0
-    for item in exp:
-         sum=sum+severityDictionary[item]
-    if((sum*days)/(len(exp)+1)>13):
-        st.markdown("You should take the consultation from doctor. ")
-    else:
-        st.markdown("It might not be that bad but you should take precautions.")
+#def calc_condition(exp,days):
+#    sum=0
+#    for item in exp:
+#         sum=sum+severityDictionary[item]
+#    if((sum*days)/(len(exp)+1)>13):
+#        st.markdown("You should take the consultation from doctor. ")
+#    else:
+#        st.markdown("It might not be that bad but you should take precautions.")
 
 @st.cache_data
 def getDescription():
@@ -223,7 +223,7 @@ def tree_to_code(tree, feature_names):
             
             st.session_state.second_prediction = sec_predict(st.session_state.symptoms_exp)
 
-            calc_condition(st.session_state.symptoms_exp,st.session_state.num_days)
+            #calc_condition(st.session_state.symptoms_exp,st.session_state.num_days)
             if(st.session_state.present_disease[0] ==st.session_state.second_prediction[0]):
                 st.markdown("You may have " + st.session_state.present_disease [0])
                 st.markdown(description_list[st.session_state.present_disease[0]])
