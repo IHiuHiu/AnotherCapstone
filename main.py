@@ -17,6 +17,14 @@ if "messages" not in st.session_state: # Initialize the chat message history
     st.session_state.messages = [
         {"role": "assistant", "content": "Tell me about your problems"}
     ]
+user_input = "None"
+new_mess = 0
+def get_response():
+    global user_input
+    global new_mess
+    user_input = st.session_state.messages[-1]["content"]
+    new_mess = 1
+
 if prompt := st.chat_input(placeholder = "Your question", on_submit = get_response):
     st.session_state.messages.append({"role": "user", "content": prompt})
 
@@ -26,13 +34,7 @@ def write_response(out):
             st.write(out)
             message = {"role": "assistant", "content": out}
             st.session_state.messages.append(message)
-user_input = "None"
-new_mess = 0
-def get_response():
-    global user_input
-    global new_mess
-    user_input = st.session_state.messages[-1]["content"]
-    new_mess = 1
+
 def reset_response():
     global user_input
     global new_mess
