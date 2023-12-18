@@ -198,6 +198,7 @@ def tree_to_code(tree, feature_names):
         for num,it in enumerate(cnf_dis):
             if num!=0:
                 write_response("Please enter valid symptom")
+                reset_response()
             else:
                 st.session_state.stage = 1
                 st.session_state.symptom_list.append(disease_input)
