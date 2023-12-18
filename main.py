@@ -23,7 +23,9 @@ if "new_mess" not in st.session_state:
     st.session_state.new_mess = 0
 if "stage" not in st.session_state:
     st.session_state.stage = 0
-    
+if "symptom_list" not in st.session_state:
+    st.session_state.symptom_list = []
+
 def get_response():
     st.session_state.user_input = prompt
     st.session_state.new_mess = 1
@@ -193,39 +195,25 @@ def tree_to_code(tree, feature_names):
             counter=0
         disease_input = str(st.session_state.user_input)
         conf,cnf_dis=check_pattern(chk_dis,disease_input)
-        if conf==1:
-            write_response("Searches related to input: ")
-            message = ''
-            for num,it in enumerate(cnf_dis):
-                message = message + str(num) + ")" + it
-            write_response(message)
+        for num,it in enumerate(cnf_dis):
             if num!=0:
-                message = "Select the one you meant (0 - " + str(num) +"): "
-                write_response(message)
-                reset_response()
-                while st.session_state.new_mess == 0:
-                    counter=0
-                conf_inp = int(st.session_state.user_input)
+                write_response("Please enter valid symptom")
             else:
-                conf_inp=0
-            disease_input=cnf_dis[conf_inp]
-            break
-            # print("Did you mean: ",cnf_dis,"?(yes/no) :",end="")
-            # conf_inp = input("")
-            # if(conf_inp=="yes"):
-            #     break
-        else:
-            write_response("Enter valid symptom.")
+                st.session_state.stage = 1
+                st.session_state.symptom_list.append(disease_input)
+                reset_response()
+                break
 
-    while True:
+    while  st.session_state.stage == 1:
         try:
             write_response("Okay. From how many days? :")
-            while new_mess ==0:
+            while nst.session_state.new_mess ==0:
                 counter =0
             num_days=int(user_input)
             reset_response()
         except:
             write_response("Enter valid input.")
+
     def recurse(node, depth):
         indent = "  " * depth
         if tree_.feature[node] != _tree.TREE_UNDEFINED:
