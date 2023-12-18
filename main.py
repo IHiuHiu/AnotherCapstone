@@ -154,8 +154,8 @@ def tree_to_code(tree, feature_names):
     while True:
         if "initial_disease" not in st.session_state:
             st.session_state.initial_disease = "None"
-        if st.session_state.initial_disease := st.text_input("Enter the symptom you are experiencing", key = "initial"): # get initial symptom
-            disease_input = str(st.session_state.initial_disease)
+        if prompt0 := st.text_input("Enter the symptom you are experiencing", key = "initial"): # get initial symptom
+            disease_input = str(prompt)
             conf,cnf_dis=check_pattern(chk_dis,disease_input)
             if conf==1:
                 poss_list = []
@@ -163,7 +163,7 @@ def tree_to_code(tree, feature_names):
                     poss_list.append(it)
                 if num!=0:
                     if st.radio("I found some similar result, is there anything you have?", key="reselect_disease", options=poss_list):
-                        st.session_state.initial_disease = st.session_state.reselect_disease)
+                        st.session_state.initial_disease = st.session_state.reselect_disease
                         break
                 else:
                     st.session_state.initial_disease = poss_list[0]
@@ -175,7 +175,8 @@ def tree_to_code(tree, feature_names):
     while True:
         if "num_days" not in st.session_state:
             st.session_state.num_days = "None"
-        if st.session_state.num_days :=st.number_input('Okay, for how many days has it been?', value=None):
+        if prompt1 :=st.number_input('Okay, for how many days has it been?', value=None):
+            st.session_state.num_days = prompt1
             break
     if "symptoms_exp" not in st.session_state:
         st.session_state.symptoms_exp = []
