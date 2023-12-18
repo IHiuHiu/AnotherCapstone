@@ -178,7 +178,7 @@ def tree_to_code(tree, feature_names):
         if conf==1:
             write_response("searches related to input: ")
             for num,it in enumerate(cnf_dis):
-                print(num,")",it)
+                write_response(num,")",it)
             if num!=0:
                 write_response(f"Select the one you meant (0 - {num}):  ", end="")
                 if prompt:
@@ -198,7 +198,7 @@ def tree_to_code(tree, feature_names):
     while True:
         try:
             write_response("Okay. From how many days? :")
-            while prompt == "None":
+            while st.session_state.messages[-1]["role"] == "assistant":
                 counter=counter+1
             num_days=int(prompt)    
         except:
