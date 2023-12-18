@@ -221,7 +221,7 @@ def tree_to_code(tree, feature_names):
             if st.session_state.count < len(st.session_state.symptoms_given):
                 question = "Are you experiencing any " + st.session_state.symptoms_given[int(st.session_state.count)] + " ?"
                 new_key = "symptom num "+ str(st.session_state.count)
-                st.markdown(question, key = new_key)
+                st.markdown(question)
                 st.button("Yes", key = "yesButton", on_click=submit)
                 st.button("No", key = "noButton", on_click=submit_no)
                     
