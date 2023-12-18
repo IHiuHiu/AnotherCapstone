@@ -13,86 +13,51 @@ import streamlit as st
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 st.header("----------HealthCare ChatBot----------")
-if "messages" not in st.session_state: # Initialize the chat message history
-    st.session_state.messages = [
-        {"role": "assistant", "content": "Tell me about your problems"}
-    ]
-if "user_input" not in st.session_state:
-    st.session_state.user_input = "None"
-if "new_mess" not in st.session_state:
-    st.session_state.new_mess = 0
-if "stage" not in st.session_state:
-    st.session_state.stage = 0
+
 if "symptom_list" not in st.session_state:
     st.session_state.symptom_list = []
 
-def get_response():
-    st.session_state.user_input = prompt
-    st.session_state.new_mess = 1
-
-if prompt := st.chat_input(placeholder = "Your question", on_submit = get_response):
-    st.session_state.messages.append({"role": "user", "content": prompt})
-
-def write_response(out):
-    with st.chat_message("assistant"):
-        with st.spinner("Thinking..."):
-            st.write(out)
-            message = {"role": "assistant", "content": out}
-            st.session_state.messages.append(message)
-
-
-def reset_response():
-    st.session_state.user_input = "None"
-    st.session_state.new_mess = 0
-
-training = pd.read_csv('./Data/Training.csv')
-testing= pd.read_csv('./Data/Testing.csv')
-cols= training.columns
-cols= cols[:-1]
-x = training[cols]
-y = training['prognosis']
-y1= y
+@st.cache_data
+def create_model():
+    training = pd.read_csv('./Data/Training.csv')
+    testing= pd.read_csv('./Data/Testing.csv')
+    cols= training.columns
+    cols= cols[:-1]
+    x = training[cols]
+    y = training['prognosis']
+    y1= y
         
-reduced_data = training.groupby(training['prognosis']).max()
+    reduced_data = training.groupby(training['prognosis']).max()
 
-#mapping strings to numbers
-le = preprocessing.LabelEncoder()
-le.fit(y)
-y = le.transform(y)
+    #mapping strings to numbers
+    le = preprocessing.LabelEncoder()
+    le.fit(y)
+    y = le.transform(y)
 
-st.write("Training model...")
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.33, random_state=42)
-testx    = testing[cols]
-testy    = testing['prognosis']
-testy    = le.transform(testy)
+    st.write("Training model...")
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.33, random_state=42)
+    testx    = testing[cols]
+    testy    = testing['prognosis']
+    testy    = le.transform(testy)
 
-clf1  = DecisionTreeClassifier()
-clf = clf1.fit(x_train,y_train)
-print(clf.score(x_train,y_train))
-print ("cross result========")
-scores = cross_val_score(clf, x_test, y_test, cv=3)
-print (scores)
-print (scores.mean())
+    clf1  = DecisionTreeClassifier()
+    clf = clf1.fit(x_train,y_train)
+    print(clf.score(x_train,y_train))
+    print ("cross result========")
+    scores = cross_val_score(clf, x_test, y_test, cv=3)
+    print (scores)
+    print (scores.mean())
 
-model=SVC()
-model.fit(x_train,y_train)
-print("for svm: ")
-print(model.score(x_test,y_test))
+    model=SVC()
+    model.fit(x_train,y_train)
+    print("for svm: ")
+    print(model.score(x_test,y_test))
+    return model, clf, cols, x, reduced_data
 
+model, clf, cols, x, reduced_data= create_model()
 importances = clf.feature_importances_
 indices = np.argsort(importances)[::-1]
 features = cols
-
-def readn(nstr):
-    engine = pyttsx3.init()
-
-    engine.setProperty('voice', "english+f5")
-    engine.setProperty('rate', 130)
-
-    engine.say(nstr)
-    engine.runAndWait()
-    engine.stop()
-
 
 severityDictionary=dict()
 description_list = dict()
@@ -103,14 +68,15 @@ symptoms_dict = {}
 
 for index, symptom in enumerate(x):
        symptoms_dict[symptom] = index
+
 def calc_condition(exp,days):
     sum=0
     for item in exp:
          sum=sum+severityDictionary[item]
     if((sum*days)/(len(exp)+1)>13):
-        write_response("You should take the consultation from doctor. ")
+        st.markdown("You should take the consultation from doctor. ")
     else:
-        write_response("It might not be that bad but you should take precautions.")
+        st.markdown("It might not be that bad but you should take precautions.")
 
 @st.cache_data
 def getDescription():
@@ -126,7 +92,6 @@ def getDescription():
 def getSeverityDict():
     global severityDictionary
     with open('./MasterData/Symptom_severity.csv') as csv_file:
-
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
         try:
@@ -140,12 +105,12 @@ def getSeverityDict():
 def getprecautionDict():
     global precautionDictionary
     with open('./MasterData/symptom_precaution.csv') as csv_file:
-
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
         for row in csv_reader:
             _prec={row[0]:[row[1],row[2],row[3],row[4]]}
             precautionDictionary.update(_prec)
+
 
 def check_pattern(dis_list,inp):
     pred_list=[]
@@ -157,7 +122,7 @@ def check_pattern(dis_list,inp):
         return 1,pred_list
     else:
         return 0,[]
-@st.cache_data
+
 def sec_predict(symptoms_exp):
     df = pd.read_csv('/content/healthcare-chatbot/Data/Training.csv')
     X = df.iloc[:, :-1]
@@ -170,7 +135,6 @@ def sec_predict(symptoms_exp):
     input_vector = np.zeros(len(symptoms_dict))
     for item in symptoms_exp:
       input_vector[[symptoms_dict[item]]] = 1
-
     return rf_clf.predict([input_vector])
 
 def print_disease(node):
@@ -187,113 +151,85 @@ def tree_to_code(tree, feature_names):
     ]
 
     chk_dis=",".join(feature_names).split(",")
-    symptoms_present = []
-    write_response("Enter the symptom you are experiencing")
-    while st.session_state.stage == 0:
-        while st.session_state.new_mess == 0:
-            counter=0
-        if disease_input := str(st.session_state.user_input):
-            conf,cnf_dis=check_pattern(chk_dis,disease_input)
-        reset_response()
-        for num,it in enumerate(cnf_dis):
-            if conf!=1:
-                write_response("Please enter valid symptom")
-            else:
-                st.session_state.stage = 1
-                st.session_state.symptom_list.append(disease_input)
-
-    write_response("Okay. From how many days? :")
-    if  st.session_state.stage == 1:
-        while st.session_state.new_mess ==0:
-            counter =0
-        num_days=int(st.session_state.user_input)
-        st.session_state.stage =2
-        reset_response()
-
-    write_response("Here")
     while True:
-        counter=0
+        if "initial_disease" not in st.session_state:
+            st.session_state.initial_disease = "None"
+        if st.session_state.initial_disease := st.text_input("Enter the symptom you are experiencing", key = "initial"): # get initial symptom
+            disease_input = str(st.session_state.initial_disease)
+            conf,cnf_dis=check_pattern(chk_dis,disease_input)
+            if conf==1:
+                poss_list = []
+                for num,it in enumerate(cnf_dis):
+                    poss_list.append(it)
+                if num!=0:
+                    if st.radio("I found some similar result, is there anything you have?", key="reselect_disease", options=poss_list):
+                        st.session_state.initial_disease = st.session_state.reselect_disease)
+                        break
+                else:
+                    st.session_state.initial_disease = poss_list[0]
+                break
+            else:
+                print("Enter valid symptom.")
+                st.session_state.initial_disease = "None"
+
+    while True:
+        if "num_days" not in st.session_state:
+            st.session_state.num_days = "None"
+        if st.session_state.num_days :=st.number_input('Okay, for how many days has it been?', value=None):
+            break
+    if "symptoms_exp" not in st.session_state:
+        st.session_state.symptoms_exp = []
+        st.session_state.symptoms_given = []
+        st.session_state.present_disease = []
+        st.session_state.second_prediction = []
     def recurse(node, depth):
         indent = "  " * depth
         if tree_.feature[node] != _tree.TREE_UNDEFINED:
             name = feature_name[node]
             threshold = tree_.threshold[node]
-
-            if name == disease_input:
+            if name == st.session_state.initial_disease:
                 val = 1
             else:
                 val = 0
             if  val <= threshold:
                 recurse(tree_.children_left[node], depth + 1)
             else:
-                symptoms_present.append(name)
                 recurse(tree_.children_right[node], depth + 1)
         else:
-            present_disease = print_disease(tree_.value[node])
-            # print( "You may have " +  present_disease )
+            st.session_state.present_disease = print_disease(tree_.value[node])
             red_cols = reduced_data.columns
-            symptoms_given = red_cols[reduced_data.loc[present_disease].values[0].nonzero()]
-            # dis_list=list(symptoms_present)
-            # if len(dis_list)!=0:
-            #     print("symptoms present  " + str(list(symptoms_present)))
-            # print("symptoms given "  +  str(list(symptoms_given)) )
-            write_response("Are you experiencing any ")
-            symptoms_exp=[]
-            for syms in list(symptoms_given):
-                inp=""
-                output = {syms + "? : "}
-                write_response(output)
+            st.session_state.symptoms_given = red_cols[reduced_data.loc[present_disease].values[0].nonzero()]
+            for syms in st.session_state.symptoms_given:
+                question = "Are you experiencing any " + str(syms) + " ?"
                 while True:
-                    while new_mess==0:
-                        counter=0
-                    inp = user_input
-                    reset_response()
-                    if(inp=="yes" or inp=="no"):
-                        break
-                    else:
-                        write_response("Provide proper answers i.e. (yes/no) : ")
-                if(inp=="yes"):
-                    symptoms_exp.append(syms)
+                    if ans:=st.text_input(question, key=syms):
+                        if ans == "yes":
+                            st.session_state.symptoms_exp.append(syms)
+                        elif ans == "no":
+                            break
+                            
+            st.session_state.second_prediction = sec_predict(st.session_state.symptoms_exp)
 
-            second_prediction=sec_predict(symptoms_exp)
-            # print(second_prediction)
-            calc_condition(symptoms_exp,num_days)
-            if(present_disease[0]==second_prediction[0]):
-                output = {"You may have " + present_disease[0]}
-                write_response(output)
-                write_response(description_list[present_disease[0]])
-
-                # readn(f"You may have {present_disease[0]}")
-                # readn(f"{description_list[present_disease[0]]}")
+            calc_condition(st.session_state.symptoms_exp,st.session_state.num_days)
+            if(st.session_state.present_disease[0] ==st.session_state.second_prediction[0]):
+                st.markdown("You may have " + st.session_state.present_disease [0])
+                st.markdown(description_list[st.session_state.present_disease[0]])
 
             else:
-                write_response("You may have ", present_disease[0], "or ", second_prediction[0])
-                write_response(description_list[present_disease[0]])
-                write_response(description_list[second_prediction[0]])
+                print("You may have " + st.session_state.present_disease[0]+ " or " + st.session_state.second_prediction[0])
+                print(description_list[st.session_state.present_disease[0]])
+                print(description_list[st.session_state.second_prediction[0]])
 
-            # print(description_list[present_disease[0]])
-            precution_list=precautionDictionary[present_disease[0]]
-            write_response("Take following measures : ")
+            precution_list=precautionDictionary[st.session_state.present_disease[0]]
+            print("Take following measures : ")
             for  i,j in enumerate(precution_list):
-                write_response(i+1,")",j)
-
-            # confidence_level = (1.0*len(symptoms_present))/len(symptoms_given)
-            # print("confidence level is " + str(confidence_level))
-
+                st.markdown(str(i+1) + ") " + j)
+    
     recurse(0, 1)
+
 
 getSeverityDict()
 getDescription()
 getprecautionDict()
-
-    
-
-for message in st.session_state.messages: # Display the prior chat messages
-    with st.chat_message(message["role"]):
-        st.write(message["content"])
-
-if st.session_state.messages[-1]["role"] != "assistant":
-    with st.chat_message("assistant"):
-        st.spinner("Thinking...") # Add response to message history
             
 tree_to_code(clf,cols)
