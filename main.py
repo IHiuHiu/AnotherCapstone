@@ -174,17 +174,21 @@ def tree_to_code(tree, feature_names):
             else:
                 print("Enter valid symptom.")
                 st.session_state.initial_disease = "None"
-                
+            
         if "num_days" not in st.session_state:
             st.session_state.num_days = "None"
-        if prompt1 :=st.number_input('Okay, for how many days has it been?', value=None, key="days"):
-            st.session_state.num_days = prompt1
-            break
+        if prompt1 := st.number_input('Okay, for how many days has it been?', value=None, key="days"):
+            if not st.session_state.days:
+                st.stop()
+            else:
+                st.experimental_rerun()
+                st.session_state.num_days = prompt1
     if "symptoms_exp" not in st.session_state:
         st.session_state.symptoms_exp = []
         st.session_state.symptoms_given = []
         st.session_state.present_disease = []
         st.session_state.second_prediction = []
+        st.session_state.count = 0
     def recurse(node, depth):
         indent = "  " * depth
         if tree_.feature[node] != _tree.TREE_UNDEFINED:
@@ -202,15 +206,18 @@ def tree_to_code(tree, feature_names):
             st.session_state.present_disease = print_disease(tree_.value[node])
             red_cols = reduced_data.columns
             st.session_state.symptoms_given = red_cols[reduced_data.loc[present_disease].values[0].nonzero()]
-            for x in len(st.session_state.symptoms_given):
-                question = "Are you experiencing any " + st.session_state.symptoms_given[x] + " ?"
-                while True:
-                    new_key = "symptom num "+ x
+            
+            while st.session_state.count < len(st.session_state.symptoms_given):
+                question = "Are you experiencing any " + st.session_state.symptoms_given[int(st.session_state.count)] + " ?"
+                    new_key = "symptom num "+ int(st.session_state.count)
                     if ans:=st.text_input(question, key = new_key):
-                        if ans == "yes":
-                            st.session_state.symptoms_exp.append(st.session_state.symptoms_given[x])
-                        elif ans == "no":
-                            break
+                        if not st.session_state.new_key:
+                            st.stop()
+                        else:
+                            st.experimental_rerun()
+                            if ans == "yes":
+                                st.session_state.symptoms_exp.append(st.session_state.symptoms_given[x])
+                            st.session_state.count= int(st.session_state.count) +1
                             
             st.session_state.second_prediction = sec_predict(st.session_state.symptoms_exp)
 
