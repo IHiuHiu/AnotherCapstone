@@ -147,6 +147,12 @@ precautionDictionary = getprecautionDict()
 #def input_first_symptom():
 #    st.session_state
 
+def submit():
+    st.session_state.symptoms_exp.append(st.session_state.symptoms_given[st.session_state.count])
+    st.session_state.count= int(st.session_state.count)+1
+def submit_no():
+    st.session_state.count= int(st.session_state.count)+1
+
 def tree_to_code(tree, feature_names):
     if "tree" not in st.session_state:
         st.session_state.tree = tree.tree_
@@ -215,10 +221,9 @@ def tree_to_code(tree, feature_names):
             if st.session_state.count < len(st.session_state.symptoms_given):
                 question = "Are you experiencing any " + st.session_state.symptoms_given[int(st.session_state.count)] + " ?"
                 new_key = "symptom num "+ str(st.session_state.count)
-                if ans:=st.radio(question, key = new_key, options = ["", "yes" , "no"], index=None):
-                    st.session_state.count= int(st.session_state.count) +1
-                    if ans == "yes":
-                        st.session_state.symptoms_exp.append(st.session_state.symptoms_given[st.session_state.count])
+                st.markdown(question, key = new_key)
+                st.button("Yes", key = "yesButton", on_click=submit)
+                st.button("No", key = "noButton", on_click=submit_no)
                     
             if st.session_state.count >= len(st.session_state.symptoms_given):            
                 st.session_state.second_prediction = sec_predict(st.session_state.symptoms_exp)
