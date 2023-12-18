@@ -182,7 +182,7 @@ def tree_to_code(tree, feature_names):
             st.stop()
         else:
             st.rerun()
-            st.session_state.num_days = prompt1
+            st.session_state.num_days = st.session_state.days
     if "symptoms_exp" not in st.session_state:
         st.session_state.symptoms_exp = []
         st.session_state.symptoms_given = []
