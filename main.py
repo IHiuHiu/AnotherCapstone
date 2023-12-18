@@ -51,9 +51,9 @@ def create_model():
     model.fit(x_train,y_train)
     print("for svm: ")
     print(model.score(x_test,y_test))
-    return model, clf, cols, x, reduced_data
+    return model, clf, cols, x, reduced_data, le
 
-model, clf, cols, x, reduced_data= create_model()
+model, clf, cols, x, reduced_data, le= create_model()
 importances = clf.feature_importances_
 indices = np.argsort(importances)[::-1]
 features = cols
