@@ -215,7 +215,7 @@ def tree_to_code(tree, feature_names):
             if st.session_state.count < len(st.session_state.symptoms_given):
                 question = "Are you experiencing any " + st.session_state.symptoms_given[int(st.session_state.count)] + " ?"
                 new_key = "symptom num "+ str(st.session_state.count)
-                if ans:=st.radio(question, key = new_key, options = ["", "yes" , "no"]):
+                if ans:=st.radio(question, key = new_key, options = ["", "yes" , "no"], index=None):
                     if ans == "yes":
                         st.session_state.symptoms_exp.append(st.session_state.symptoms_given[st.session_state.count])
                     st.session_state.count= int(st.session_state.count) +1
