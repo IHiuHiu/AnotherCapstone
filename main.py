@@ -197,7 +197,7 @@ def tree_to_code(tree, feature_names):
             write_response("searches related to input: ")
             message = ''
             for num,it in enumerate(cnf_dis):
-                message = message + num + ")" + it
+                message = message + str(num) + ")" + it
             write_response(message)
             if num!=0:
                 message = "Select the one you meant (0 - " + num +"): "
