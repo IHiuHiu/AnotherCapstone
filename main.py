@@ -35,6 +35,12 @@ x = training[cols]
 y = training['prognosis']
 y1= y
 
+def get_response():
+    while st.session_state.messages[-1]["role"] == "assistant":
+        print("waiting...")
+    response = st.session_state.messages[-1]["content"]
+    return response
+        
 reduced_data = training.groupby(training['prognosis']).max()
 
 #mapping strings to numbers
@@ -168,12 +174,8 @@ def tree_to_code(tree, feature_names):
 
     while True:
         write_response("Enter the symptom you are experiencing")
-        counter = 0
-        while prompt == "None":
-            counter=counter+1
-        disease_input = str(prompt)
-        while disease_input == "None" :
-            counter=counter+1
+        user_res = get_response()
+        disease_input = str(user_res)
         conf,cnf_dis=check_pattern(chk_dis,disease_input)
         if conf==1:
             write_response("searches related to input: ")
@@ -198,9 +200,8 @@ def tree_to_code(tree, feature_names):
     while True:
         try:
             write_response("Okay. From how many days? :")
-            while st.session_state.messages[-1]["role"] == "assistant":
-                counter=counter+1
-            num_days=int(prompt)    
+            user_res = get_response()
+            num_days=int(user_res)    
         except:
             write_response("Enter valid input.")
     def recurse(node, depth):
