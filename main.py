@@ -21,8 +21,8 @@ user_input = "None"
 new_mess = 0
 def get_response():
     global user_input
-    global new_mess
     user_input = prompt
+    global new_mess
     new_mess = 1
 
 if prompt := st.chat_input(placeholder = "Your question", on_submit = get_response):
@@ -37,8 +37,8 @@ def write_response(out):
 
 def reset_response():
     global user_input
-    global new_mess
     user_input = "None"
+    global new_mess
     new_mess = 0
 
 training = pd.read_csv('./Data/Training.csv')
