@@ -209,15 +209,15 @@ def tree_to_code(tree, feature_names):
             
             while st.session_state.count < len(st.session_state.symptoms_given):
                 question = "Are you experiencing any " + st.session_state.symptoms_given[int(st.session_state.count)] + " ?"
-                    new_key = "symptom num "+ int(st.session_state.count)
-                    if ans:=st.text_input(question, key = new_key):
-                        if not st.session_state.new_key:
-                            st.stop()
-                        else:
-                            st.experimental_rerun()
-                            if ans == "yes":
-                                st.session_state.symptoms_exp.append(st.session_state.symptoms_given[x])
-                            st.session_state.count= int(st.session_state.count) +1
+                new_key = "symptom num "+ int(st.session_state.count)
+                if ans:=st.text_input(question, key = new_key):
+                    if not st.session_state.new_key:
+                        st.stop()
+                    else:
+                        st.experimental_rerun()
+                        if ans == "yes":
+                            st.session_state.symptoms_exp.append(st.session_state.symptoms_given[x])
+                        st.session_state.count= int(st.session_state.count) +1
                             
             st.session_state.second_prediction = sec_predict(st.session_state.symptoms_exp)
 
