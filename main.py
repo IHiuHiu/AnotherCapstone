@@ -187,7 +187,7 @@ def tree_to_code(tree, feature_names):
 
     while True:
         write_response("Enter the symptom you are experiencing")
-        while(new_mess == 0):
+        while new_mess == 0:
             counter = 0
         disease_input = str(user_input)
         reset_response()
@@ -198,7 +198,7 @@ def tree_to_code(tree, feature_names):
                 print(num,")",it)
             if num!=0:
                 print(f"Select the one you meant (0 - {num}):  ", end="")
-                while(new_mess == 0):
+                while new_mess == 0:
                     counter = 0
                 conf_inp = int(user_input)
                 reset_response()
