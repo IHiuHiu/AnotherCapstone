@@ -159,7 +159,7 @@ def tree_to_code(tree, feature_names):
         if not st.session_state.first:
             st.stop()
         else:
-            st.rerun()
+            
             disease_input = str(prompt0)
             conf,cnf_dis=check_pattern(chk_dis,disease_input)
             if conf==1:
@@ -184,7 +184,6 @@ def tree_to_code(tree, feature_names):
         if not st.session_state.days:
             st.stop()
         else:
-            st.rerun()
             st.session_state.num_days = st.session_state.days
     if "symptoms_exp" not in st.session_state:
         st.session_state.symptoms_exp = []
@@ -221,7 +220,7 @@ def tree_to_code(tree, feature_names):
                         if ans == "yes":
                             st.session_state.symptoms_exp.append(st.session_state.symptoms_given[st.session_state.count])
                         st.session_state.count= int(st.session_state.count) +1
-                        st.rerun()
+                        
 
             
             st.session_state.second_prediction = sec_predict(st.session_state.symptoms_exp)
