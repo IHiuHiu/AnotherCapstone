@@ -190,9 +190,9 @@ def tree_to_code(tree, feature_names):
         while new_mess == 0:
             counter = 0
         disease_input = str(user_input)
-        st.header(user_input)
+        write_response(user_input)
         reset_response()
-        st.header(user_input)
+        write_response(user_input)
         conf,cnf_dis=check_pattern(chk_dis,disease_input)
         if conf==1:
             write_response("searches related to input: ")
