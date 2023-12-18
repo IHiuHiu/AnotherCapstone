@@ -198,9 +198,9 @@ def tree_to_code(tree, feature_names):
     while True:
         try:
             write_response("Okay. From how many days? :")
-            if prompt:
-                num_days=int(prompt)
-            break
+            while prompt == "None":
+                counter=counter+1
+            num_days=int(prompt)    
         except:
             write_response("Enter valid input.")
     def recurse(node, depth):
