@@ -205,7 +205,7 @@ def tree_to_code(tree, feature_names):
             for syms in st.session_state.symptoms_given:
                 question = "Are you experiencing any " + str(syms) + " ?"
                 while True:
-                    if ans:=st.text_input(question, key=):
+                    if ans:=st.text_input(question):
                         if ans == "yes":
                             st.session_state.symptoms_exp.append(syms)
                         elif ans == "no":
