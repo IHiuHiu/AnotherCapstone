@@ -21,9 +21,8 @@ if prompt := st.chat_input("Your question"): # Prompt for user input and save to
     st.session_state.messages.append({"role": "user", "content": prompt})
 def get_response():
     while True:
-        if prompt != "None":
-            break
-    return prompt
+        if prompt := st.chat_input("Your question"):
+            return prompt
 
 def write_response(out):
     with st.chat_message("assistant"):
@@ -31,7 +30,7 @@ def write_response(out):
             st.write(out)
             message = {"role": "assistant", "content": out}
             st.session_state.messages.append(message)
-st.write("Loading data...")
+
 training = pd.read_csv('./Data/Training.csv')
 testing= pd.read_csv('./Data/Testing.csv')
 cols= training.columns
