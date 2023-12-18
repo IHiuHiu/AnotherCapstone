@@ -148,7 +148,7 @@ precautionDictionary = getprecautionDict()
 #    st.session_state
 
 def tree_to_code(tree, feature_names):
-    if "tree" not in session_state:
+    if "tree" not in st.session_state:
         st.session_state.tree = tree.tree_
     feature_name = [
         feature_names[i] if i != _tree.TREE_UNDEFINED else "undefined!"
