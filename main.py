@@ -210,7 +210,7 @@ def tree_to_code(tree, feature_names):
             
             while st.session_state.count < len(st.session_state.symptoms_given):
                 question = "Are you experiencing any " + st.session_state.symptoms_given[int(st.session_state.count)] + " ?"
-                new_key = "symptom num "+ st.session_state.count
+                new_key = "symptom num "+ str(st.session_state.count)
                 if ans:=st.text_input(question, key = new_key):
                     if not st.session_state.new_key:
                         st.stop()
