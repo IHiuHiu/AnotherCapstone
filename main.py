@@ -170,7 +170,7 @@ def tree_to_code(tree, feature_names):
         write_response("Enter the symptom you are experiencing")
         counter = 0
         while prompt == "None":
-            counter++
+            counter=counter+1
         disease_input = str(prompt)
         if(disease_input != "None"):
         conf,cnf_dis=check_pattern(chk_dis,disease_input)
