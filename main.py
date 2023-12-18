@@ -151,29 +151,31 @@ def tree_to_code(tree, feature_names):
     ]
 
     chk_dis=",".join(feature_names).split(",")
-    while True:
-        if "initial_disease" not in st.session_state:
-            st.session_state.initial_disease = "None"
-        if prompt0 := st.text_input("Enter the symptom you are experiencing", key = "first"): # get initial symptom
+    if "initial_disease" not in st.session_state:
+        st.session_state.initial_disease = "None"
+    if prompt0 := st.text_input("Enter the symptom you are experiencing", key = "first"): # get initial symptom
+        if not st.session.state.first:
+            st.stop()
+        else:
+            st.experimental_rerun()
             disease_input = str(prompt0)
             conf,cnf_dis=check_pattern(chk_dis,disease_input)
             if conf==1:
                 poss_list = []
                 for num,it in enumerate(cnf_dis):
                     poss_list.append(it)
-                if num!=0:
-                    while True:
-                        if prompt2 := st.radio("I found some similar result, is there anything you have?", key="reselect_disease", options=poss_list):
+                    if num!=0:
+                        while True:
+                            if prompt2 := st.radio("I found some similar result, is there anything you have?", key="reselect_disease", options=poss_list):
                             st.session_state.initial_disease = prompt2
                             break
                     break
                 else:
                     st.session_state.initial_disease = poss_list[0]
-                break
             else:
                 print("Enter valid symptom.")
                 st.session_state.initial_disease = "None"
-
+                
     while True:
         if "num_days" not in st.session_state:
             st.session_state.num_days = "None"
