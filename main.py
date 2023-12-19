@@ -14,6 +14,15 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 st.header("----------HealthCare ChatBot----------")
 
+
+def clear_cache():
+    keys = list(st.session_state.keys())
+    for key in keys:
+        st.session_state.pop(key)
+
+st.button("Reset", key="clear", type = "primary", on_click=clear_cache)
+    
+
 if "symptom_list" not in st.session_state:
     st.session_state.symptom_list = []
 
