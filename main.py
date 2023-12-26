@@ -182,8 +182,8 @@ def tree_to_code(tree, feature_names):
                 for num,it in enumerate(cnf_dis):
                     poss_list.append(it)
                     if num!=0:
-                        prompt2 = st.radio("I found some similar result, is there anything you have?", key="reselect_disease", options=poss_list, index = None)
-                        st.session_state.initial_disease = prompt2
+                        if prompt2 := st.radio("I found some similar result, is there anything you have?", key="reselect_disease", options=poss_list, index = None):
+                            st.session_state.initial_disease = prompt2
                     else:
                         st.session_state.initial_disease = poss_list[0]
             else:
