@@ -20,7 +20,7 @@ def clear_cache():
     for key in keys:
         st.session_state.pop(key)
 
-st.button("Reset", key="clear", type = "primary", on_click=clear_cache)
+st.button("Reset", key="clear", on_click=clear_cache)
     
 
 if "symptom_list" not in st.session_state:
