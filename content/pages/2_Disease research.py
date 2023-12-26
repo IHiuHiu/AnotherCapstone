@@ -204,10 +204,22 @@ def tree_to_code(tree, feature_names):
         st.session_state.second_prediction = []
         st.session_state.count = 0
     def recurse(node, depth):
-        present_disease = print_disease(st.session_state.tree.value[node])
-        red_cols = reduced_data.columns
-        st.session_state.present_disease = present_disease
-        st.session_state.symptoms_given = red_cols[reduced_data.loc[present_disease].values[0].nonzero()]
+        if st.session_state.tree.feature[node] != _tree.TREE_UNDEFINED:
+            name = feature_name[node]
+            threshold = st.session_state.tree.threshold[node]
+            if name == st.session_state.initial_disease:
+                val = 1
+            else:
+                val = 0
+            if  val <= threshold:
+                recurse(st.session_state.tree.children_left[node], depth + 1)
+            else:
+                recurse(st.session_state.tree.children_right[node], depth + 1)
+        else:
+            present_disease = print_disease(st.session_state.tree.value[node])
+            red_cols = reduced_data.columns
+            st.session_state.present_disease = present_disease
+            st.session_state.symptoms_given = red_cols[reduced_data.loc[present_disease].values[0].nonzero()]
         if prompt3 := st.radio("According to our database, " + st.session_state.initial_disease + " shows up in these conditions:", key = "choose_disease", options = present_disease, index= None):
             st.markdown("Condition: " + prompt3)
             st.markdown(description_list[prompt3])
