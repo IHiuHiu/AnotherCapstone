@@ -145,7 +145,7 @@ def sec_predict(symptoms_exp):
 
 def get_disease_with_symp(symp):
     examples = training[symp]
-    condition = training[prognosis]
+    condition = training["prognosis"]
     disease_list = []
     for x in range(len(examples)-1,0,-1):
         if examples[x] == 1:
