@@ -12,8 +12,10 @@ import warnings
 import streamlit as st
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
+st.set_page_config(page_title="Heathcare Chatbot", page_icon="🤖")
 st.header("----------HealthCare ChatBot----------")
 
+st.sidebar.header("Healthcare Chatbot")
 
 def clear_cache():
     keys = list(st.session_state.keys())
