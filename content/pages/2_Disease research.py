@@ -176,8 +176,8 @@ def tree_to_code(tree, feature_names):
     chk_dis=",".join(feature_names).split(",")
     if "initial_disease" not in st.session_state:
         st.session_state.initial_disease = "None"
-    if prompt0 := st.text_input("What do you want to research about?", key = "first"): # get initial symptom
-        if not st.session_state.first:
+    if prompt0 := st.text_input("What do you want to research about?", key = "firstQ"): # get initial symptom
+        if not st.session_state.firstQ:
             st.stop()
         else:
             disease_input = str(prompt0)
@@ -187,7 +187,7 @@ def tree_to_code(tree, feature_names):
                 for num,it in enumerate(cnf_dis):
                     poss_list.append(it)
                     if num!=0:
-                        if prompt2 := st.radio("I found some similar result, is there anything you mean?", key="reselect_disease", options=poss_list, index = None):
+                        if prompt2 := st.radio("I found some similar result, is there anything you mean?", key="reselect_symp", options=poss_list, index = None):
                             st.session_state.initial_disease = prompt2
                             st.session_state.getInitialSymp = 1
                     else:
