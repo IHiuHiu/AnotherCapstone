@@ -177,7 +177,6 @@ def tree_to_code(tree, feature_names):
         if not st.session_state.first:
             st.stop()
         else:
-            
             disease_input = str(prompt0)
             conf,cnf_dis=check_pattern(chk_dis,disease_input)
             if conf==1:
@@ -186,14 +185,14 @@ def tree_to_code(tree, feature_names):
                     poss_list.append(it)
                     if num!=0:
                         while True:
-                            if prompt2 := st.radio("I found some similar result, is there anything you have?", key="reselect_disease", options=poss_list):
+                            if prompt2 := st.radio("I found some similar result, is there anything you have?", key="reselect_disease", options=poss_list, index = None):
                                 st.session_state.initial_disease = prompt2
                                 break
                         break
                     else:
                         st.session_state.initial_disease = poss_list[0]
             else:
-                print("Enter valid symptom.")
+                st.warning('Enter valid symptom.')
                 st.session_state.initial_disease = "None"
             
     if "num_days" not in st.session_state:
