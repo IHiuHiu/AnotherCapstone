@@ -161,7 +161,7 @@ def submit():
     st.session_state.count= int(st.session_state.count)+1
 def submit_no():
     st.session_state.count= int(st.session_state.count)+1
-if st.session_state.getInitialSymp not in st.session_state:
+if "getInitialSymp" not in st.session_state:
     st.session_state.getInitialSymp = 0
 def tree_to_code(tree, feature_names):
     if "tree" not in st.session_state:
