@@ -62,9 +62,9 @@ def create_model():
     model.fit(x_train,y_train)
     print("for svm: ")
     print(model.score(x_test,y_test))
-    return model, clf, cols, x, reduced_data, le
+    return training, model, clf, cols, x, reduced_data, le
 
-model, clf, cols, x, reduced_data, le= create_model()
+training, model, clf, cols, x, reduced_data, le= create_model()
 importances = clf.feature_importances_
 indices = np.argsort(importances)[::-1]
 features = cols
@@ -143,6 +143,16 @@ def sec_predict(symptoms_exp):
       input_vector[[symptoms_dict[item]]] = 1
     return rf_clf.predict([input_vector])
 
+def get_disease_with_symp(symp):
+    examples = training[symp]
+    condition = training[prognosis]
+    disease_list = []
+    for x in range(len(examples)-1,0,-1):
+        if examples[x] == 1:
+            if condition[x] not in disease_list:
+                disease_list.append(condition[x])
+    return disease_list
+
 def print_disease(node):
     node = node[0]
     val  = node.nonzero()
@@ -153,12 +163,10 @@ severityDictionary = getSeverityDict()
 description_list = getDescription()
 precautionDictionary = getprecautionDict()
 
-#def input_first_symptom():
-#    st.session_state
-
 def submit():
     st.session_state.symptoms_exp.append(st.session_state.symptoms_given[st.session_state.count])
     st.session_state.count= int(st.session_state.count)+1
+    
 def submit_no():
     st.session_state.count= int(st.session_state.count)+1
     
@@ -216,10 +224,8 @@ def tree_to_code(tree, feature_names):
             else:
                 recurse(st.session_state.tree.children_right[node], depth + 1)
         else:
-            present_disease = print_disease(st.session_state.tree.value[node])
-            red_cols = reduced_data.columns
+            present_disease = get_disease_with_symp(st.session_state.initial_disease)
             st.session_state.present_disease = present_disease
-            st.session_state.symptoms_given = red_cols[reduced_data.loc[present_disease].values[0].nonzero()]
             if prompt3 := st.radio("According to our database, " + st.session_state.initial_disease + " shows up in these conditions:", key = "choose_disease", options = present_disease, index= None):
                 st.markdown("Condition: " + prompt3)
                 st.markdown(description_list[prompt3])
