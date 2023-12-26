@@ -186,13 +186,13 @@ def tree_to_code(tree, feature_names):
                 poss_list = []
                 for num,it in enumerate(cnf_dis):
                     poss_list.append(it)
-                    if num!=0:
-                        if prompt2 := st.radio("I found some similar result, is there anything you mean?", key="reselect_symp", options=poss_list, index = None):
-                            st.session_state.initial_disease = prompt2
-                            st.session_state.getInitialSymp = 1
-                    else:
-                        st.session_state.initial_disease = poss_list[0]
+                if num!=0:
+                    if prompt2 := st.radio("I found some similar result, is there anything you mean?", key="reselect_symp", options=poss_list, index = None):
+                        st.session_state.initial_disease = prompt2
                         st.session_state.getInitialSymp = 1
+                else:
+                    st.session_state.initial_disease = poss_list[0]
+                    st.session_state.getInitialSymp = 1
             else:
                 st.warning('Enter valid symptom.')
                 st.session_state.initial_disease = "None"
