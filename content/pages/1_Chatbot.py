@@ -161,7 +161,8 @@ def submit():
     st.session_state.count= int(st.session_state.count)+1
 def submit_no():
     st.session_state.count= int(st.session_state.count)+1
-
+if st.session_state.getInitialSymp not in st.session_state:
+    st.session_state.getInitialSymp = 0
 def tree_to_code(tree, feature_names):
     if "tree" not in st.session_state:
         st.session_state.tree = tree.tree_
@@ -186,19 +187,14 @@ def tree_to_code(tree, feature_names):
                     if num!=0:
                         if prompt2 := st.radio("I found some similar result, is there anything you have?", key="reselect_disease", options=poss_list, index = None):
                             st.session_state.initial_disease = prompt2
+                            st.session_state.getInitialSymp = 1
                     else:
                         st.session_state.initial_disease = poss_list[0]
+                        st.session_state.getInitialSymp = 1
             else:
                 st.warning('Enter valid symptom.')
                 st.session_state.initial_disease = "None"
-            
-    if "num_days" not in st.session_state:
-        st.session_state.num_days = "None"
-    if prompt1 := st.number_input('Okay, for how many days has it been?', value=None, key="days"):
-        if not st.session_state.days:
-            st.stop()
-        else:
-            st.session_state.num_days = st.session_state.days
+        
     if "symptoms_exp" not in st.session_state:
         st.session_state.symptoms_exp = []
         st.session_state.symptoms_given = []
@@ -206,6 +202,13 @@ def tree_to_code(tree, feature_names):
         st.session_state.second_prediction = []
         st.session_state.count = 0
     def recurse(node, depth):
+        if "num_days" not in st.session_state:
+            st.session_state.num_days = "None"
+        if prompt1 := st.number_input('Okay, for how many days has it been?', value=None, key="days"):
+            if not st.session_state.days:
+                st.stop()
+            else:
+                st.session_state.num_days = st.session_state.days
         if st.session_state.tree.feature[node] != _tree.TREE_UNDEFINED:
             name = feature_name[node]
             threshold = st.session_state.tree.threshold[node]
@@ -247,7 +250,7 @@ def tree_to_code(tree, feature_names):
                 st.markdown("Take following measures : ")
                 for  i,j in enumerate(precution_list):
                     st.markdown(str(i+1) + ") " + j)
-    
-    recurse(0, 1)
+    if st.session_state.getInitialSymp != 0:
+        recurse(0, 1)
             
 tree_to_code(clf,cols)
