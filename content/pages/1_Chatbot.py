@@ -205,7 +205,7 @@ def tree_to_code(tree, feature_names):
         if "num_days" not in st.session_state:
             st.session_state.num_days = "None"
         if prompt1 := st.number_input('Okay, for how many days has it been?', value=None, key='days'):
-            st.session_state.num_days = st.session_state.days
+            st.session_state.num_days = prompt1
         if st.session_state.tree.feature[node] != _tree.TREE_UNDEFINED:
             name = feature_name[node]
             threshold = st.session_state.tree.threshold[node]
