@@ -220,9 +220,9 @@ def tree_to_code(tree, feature_names):
             red_cols = reduced_data.columns
             st.session_state.present_disease = present_disease
             st.session_state.symptoms_given = red_cols[reduced_data.loc[present_disease].values[0].nonzero()]
-        if prompt3 := st.radio("According to our database, " + st.session_state.initial_disease + " shows up in these conditions:", key = "choose_disease", options = present_disease, index= None):
-            st.markdown("Condition: " + prompt3)
-            st.markdown(description_list[prompt3])
+            if prompt3 := st.radio("According to our database, " + st.session_state.initial_disease + " shows up in these conditions:", key = "choose_disease", options = present_disease, index= None):
+                st.markdown("Condition: " + prompt3)
+                st.markdown(description_list[prompt3])
     if st.session_state.getInitialSymp != 0:
         recurse(0, 1)
             
