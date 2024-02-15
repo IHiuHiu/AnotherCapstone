@@ -4,4 +4,5 @@ pyttsx3
 streamlit
 streamlit_authenticator
 deta
-shillelagh[all]
+sqlalchemy
+psycopg2-binary
