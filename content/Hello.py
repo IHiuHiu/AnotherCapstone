@@ -15,9 +15,9 @@ st.markdown(
 """
 )
 #from shillelagh.backends.apsw.db import connect
-sheets_url='https://docs.google.com/spreadsheets/d/1m2SZgMap_UpqFDc9anr1Ac6hXPc9u65KZRLTHWZhZtk/edit#gid=0'
-csv_url = sheets_url.replace("/edit#gid=", "/export?format=csv&gid=")
-result1 = pd.read_csv(csv_url)
+#sheets_url='https://docs.google.com/spreadsheets/d/1m2SZgMap_UpqFDc9anr1Ac6hXPc9u65KZRLTHWZhZtk/edit#gid=0'
+#csv_url = sheets_url.replace("/edit#gid=", "/export?format=csv&gid=")
+#result1 = pd.read_csv(csv_url)
 #conn = connect(sheets_url)
 #result2 = conn.execute("""
 #    SELECT
@@ -25,7 +25,7 @@ result1 = pd.read_csv(csv_url)
 #    FROM
 #        "https://docs.google.com/spreadsheets/d/1m2SZgMap_UpqFDc9anr1Ac6hXPc9u65KZRLTHWZhZtk/edit?usp=sharing"
 #""", headers=1)
-for row in pd.DataFrame(result1):
-    st.write(row + '1')
+#for  in pd.DataFrame(result1):
+#    st.write(row + '1')
 #for row in result2:
 #    print(row + '2')
