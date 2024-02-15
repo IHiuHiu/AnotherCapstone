@@ -15,6 +15,18 @@ st.markdown(
     Introduction stuff blablabla
 """
 )
+
+conn = st.connection("postgresql", type="sql")
+
+# Perform query.
+df = conn.query('SELECT * FROM Streamlit;', ttl="10m")
+
+# Print results.
+for row in df.itertuples():
+    st.write(row)
+
+
+
 #from shillelagh.backends.apsw.db import connect
 #sheets_url='https://docs.google.com/spreadsheets/d/1m2SZgMap_UpqFDc9anr1Ac6hXPc9u65KZRLTHWZhZtk/edit#gid=0'
 #csv_url = sheets_url.replace("/edit#gid=", "/export?format=csv&gid=")
