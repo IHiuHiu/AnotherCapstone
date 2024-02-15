@@ -14,7 +14,7 @@ st.markdown(
     Introduction stuff blablabla
 """
 )
-from shillelagh.backends.apsw.db import connect
+from gsheetsdb import connect
 conn = connect()
 result = conn.execute("""
     SELECT
