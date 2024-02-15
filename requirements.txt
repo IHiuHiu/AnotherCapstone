@@ -2,7 +2,7 @@ scikit-learn
 pandas
 pyttsx3
 streamlit
-streamlitauthenticator
+streamlit_authenticator
 deta
 os
 psycopg2
