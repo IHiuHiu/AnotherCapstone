@@ -25,7 +25,7 @@ result1 = pd.read_csv(csv_url)
 #    FROM
 #        "https://docs.google.com/spreadsheets/d/1m2SZgMap_UpqFDc9anr1Ac6hXPc9u65KZRLTHWZhZtk/edit?usp=sharing"
 #""", headers=1)
-for row in result1:
+for row in df(result1):
     st.write(row + '1')
 #for row in result2:
 #    print(row + '2')
