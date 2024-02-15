@@ -14,13 +14,13 @@ st.markdown(
     Introduction stuff blablabla
 """
 )
-from gsheetsdb import connect
+from shillelagh.backends.apsw.db import connect
 conn = connect()
 result = conn.execute("""
     SELECT
         *
     FROM
-        "https://docs.google.com/spreadsheets/d/1Qrinki83wzM0TJrMNiACnInHAN9db1okjZwzdNiOX04/"
+        "https://docs.google.com/spreadsheets/d/1m2SZgMap_UpqFDc9anr1Ac6hXPc9u65KZRLTHWZhZtk/edit?usp=sharing"
 """, headers=1)
 for row in result:
     print(row)
