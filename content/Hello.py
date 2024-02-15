@@ -15,7 +15,7 @@ st.markdown(
 """
 )
 from shillelagh.backends.apsw.db import connect
-conn = connect()
+conn = connect('https://docs.google.com/spreadsheets/d/1m2SZgMap_UpqFDc9anr1Ac6hXPc9u65KZRLTHWZhZtk/edit?usp=sharing')
 result = conn.execute("""
     SELECT
         *
