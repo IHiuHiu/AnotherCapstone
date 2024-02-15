@@ -1,5 +1,4 @@
 import streamlit as st
-import streamlit_gsheets
 from streamlit_gsheets import GSheetsConnection
 
 st.set_page_config(
