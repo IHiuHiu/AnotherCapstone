@@ -11,9 +11,6 @@ import csv
 import warnings
 import streamlit as st
 import streamlit_authenticator as stauth
-import os
-import psycopg2
-from sqlalchemy import create_engine
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 st.set_page_config(page_title="Heathcare Chatbot", page_icon="🤖")
