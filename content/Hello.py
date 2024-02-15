@@ -19,7 +19,7 @@ st.markdown(
 conn = st.connection("postgresql", type="sql")
 
 # Perform query.
-conn.query('\x on;')
+#conn.query('\x on;')
 db = conn.query('SELECT * FROM userinfo;', ttl="10m")
 
 # Print results.
