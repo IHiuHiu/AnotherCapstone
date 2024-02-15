@@ -19,7 +19,7 @@ st.markdown(
 conn = st.connection("postgresql", type="sql")
 
 # Perform query.
-df = conn.query('SELECT * FROM Streamlit;', ttl="10m")
+df = conn.query('SELECT * FROM streamlit;', ttl="10m")
 
 # Print results.
 for row in df.itertuples():
