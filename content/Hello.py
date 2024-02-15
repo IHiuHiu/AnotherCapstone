@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import streamlit_authenticator as stauth
 st.set_page_config(
     page_title="Welcome",
     page_icon="👋",
