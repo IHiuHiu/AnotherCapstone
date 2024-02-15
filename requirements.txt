@@ -4,3 +4,6 @@ pyttsx3
 streamlit
 streamlitauthenticator
 deta
+os
+psycopg2
+sqlalchemy
