@@ -1,13 +1,9 @@
 import streamlit as st
-from streamlit_gsheets import GSheetsConnection
 
 st.set_page_config(
     page_title="Welcome",
     page_icon="👋",
 )
-
-# Create a connection object.
-conn = st.connection("gsheets", type=GSheetsConnection)
 
 st.write("# Welcome to the Healthcare Application 👋")
 
@@ -18,9 +14,13 @@ st.markdown(
     Introduction stuff blablabla
 """
 )
-
-df = conn.read()
-
-# Print results.
-for row in df.itertuples():
-    st.write(f"{row.username} has a :{row.password}:")
+from shillelagh.backends.apsw.db import connect
+conn = connect()
+result = conn.execute("""
+    SELECT
+        *
+    FROM
+        "https://docs.google.com/spreadsheets/d/1Qrinki83wzM0TJrMNiACnInHAN9db1okjZwzdNiOX04/"
+""", headers=1)
+for row in result:
+    print(row)
