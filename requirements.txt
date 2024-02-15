@@ -4,4 +4,4 @@ pyttsx3
 streamlit
 streamlit_authenticator
 deta
-
+streamlit_gsheets
