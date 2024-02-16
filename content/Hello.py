@@ -4,6 +4,7 @@ import streamlit_authenticator as stauth
 import numpy as np
 import re
 import datetime
+import psycopg2
 st.set_page_config(
     page_title="Welcome",
     page_icon="👋",
@@ -24,15 +25,26 @@ if 'current_user' not in st.session_state:
 current_user = st.session_state['current_user']
 
 conn = st.connection("postgresql", type="sql")
-
 # Perform query.
 #conn.query('\x on;')
 
 # Print results.
 def insert_user(username, email, password):
-    date_joined = datetime.datetime.now()
-    date = str(date_joined.year) + '-0' + str(date_joined.month) + '-' + str(date_joined.day)
-    conn.query(f"INSERT INTO userinfo (username, email, password, datejoin) VALUES ('{username}','{email}','{password}','{date}') RETURNING *;")
+    with st.spinner("Please wait for DB connection..."):
+        date_joined = datetime.datetime.now()
+        date = str(date_joined.year) + '-0' + str(date_joined.month) + '-' + str(date_joined.day)
+        conn2 = psycopg2.connect(
+        host = "34.87.103.138"
+        database = "New_Database"
+        username = "streamlit"
+        password = "123789"
+        )
+        database_url = f'postgresql+psycopg2://streamlit:123789@34.87.103.138/New_Database'
+        engine = create_engine(database_url)
+        cursor = conn2.cursor()
+        cursor.execute(f"INSERT INTO userinfo (username, email, password, datejoin) VALUES ('{username}','{email}','{password}','{date}') RETURNING *;")
+    st.success('Account created successfully!!')
+
 
 def get_user_emails():
     """
@@ -101,8 +113,6 @@ def sign_up():
                                     if password1 == password2:
                                         # Add User to DB
                                         insert_user(username, email, password1)
-                                        st.success('Account created successfully!!')
-                                        st.balloons()
                                     else:
                                         st.warning('Passwords Do Not Match')
                                 else:
