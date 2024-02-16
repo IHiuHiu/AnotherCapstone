@@ -20,6 +20,7 @@ st.set_page_config(page_title="Heathcare Chatbot", page_icon="🤖")
 st.header("----------HealthCare ChatBot----------")
 
 st.sidebar.header("Healthcare Chatbot")
+st.sidebar.subheader(f'Welcome {st.session_state["current_user"]}')
 
 def clear_cache():
     keys = list(st.session_state.keys())
