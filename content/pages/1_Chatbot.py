@@ -171,7 +171,7 @@ def save_session_activity(name, sym, pred):
     database_url = f'postgresql+psycopg2://streamlit:123789@34.87.103.138/New_Database'
     engine = create_engine(database_url)
     cursor = conn2.cursor()
-    cursor.execute(f"INSERT INTO userinfo (username, symptoms, prediction, time) VALUES ('{name}','{symptom_code}','{dis}','{date}') RETURNING *;")
+    cursor.execute(f"INSERT INTO sessionact (username, symptoms, prediction, time) VALUES ('{name}','{symptom_code}','{dis}','{date}') RETURNING *;")
     st.session_state["create_user"]=0
     conn2.commit()
     cursor.close()
