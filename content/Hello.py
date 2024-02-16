@@ -17,7 +17,7 @@ st.sidebar.success("What do you want to do?")
 
 st.markdown(
     """
-    Introduction stuff blablabla
+    This is my prototype for a chatbot. Please be kind to my baby :(
 """
 )
 
