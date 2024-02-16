@@ -149,7 +149,7 @@ if username:
             st.sidebar.subheader(f'Welcome {username}')
             Authenticator.logout('Log Out', 'sidebar')
 
-            st.subheader('This is the home page')
+            st.subheader(f'Welcome, {username}')
             st.markdown(
                 """
                 ---
@@ -157,6 +157,8 @@ if username:
                 
                 """
             )
+            if current_user not in st.session_state:
+                st.session_state.current_user = username
 
         elif not authentication_status:
             with info:
