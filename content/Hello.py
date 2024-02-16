@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import streamlit_authenticator as stauth
 import numpy as np
+import re
 st.set_page_config(
     page_title="Welcome",
     page_icon="👋",
