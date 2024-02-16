@@ -99,8 +99,7 @@ def sign_up():
                                 if len(password1) >= 6:
                                     if password1 == password2:
                                         # Add User to DB
-                                        hashed_password = stauth.Hasher([password2]).generate()
-                                        insert_user(email, username, hashed_password[0])
+                                        insert_user(email, username, password1)
                                         st.success('Account created successfully!!')
                                         st.balloons()
                                     else:
