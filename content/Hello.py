@@ -4,7 +4,7 @@ import streamlit_authenticator as stauth
 import numpy as np
 import re
 import datetime
-import psycopg2-binary
+import psycopg2
 from sqlalchemy import create_engine
 st.set_page_config(
     page_title="Welcome",
