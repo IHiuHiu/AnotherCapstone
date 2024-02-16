@@ -145,7 +145,7 @@ def sec_predict(symptoms_exp):
       input_vector[[symptoms_dict[item]]] = 1
     return rf_clf.predict([input_vector])
 
-def save_session_activity(name, sym, pred, time):
+def save_session_activity(name, sym, pred):
     symptom_list = list(severityDictionary.keys())
     se = []
     for i in symptom_list:
@@ -154,6 +154,12 @@ def save_session_activity(name, sym, pred, time):
         else:
             se.append('0')
     symptom_code' '.join(str(e) for e in se)
+    if isinstance(pred, list):
+        dis = '/'.join(e for e in pred
+    else: 
+        dis = pred
+    date_session = datetime.datetime.now()
+    date = str(date_session.year) + '-0' + str(date_session.month) + '-' + str(date_session.day)
     conn2 = psycopg2.connect(
         host = "34.87.103.138",
         database = "New_Database",
@@ -163,7 +169,7 @@ def save_session_activity(name, sym, pred, time):
     database_url = f'postgresql+psycopg2://streamlit:123789@34.87.103.138/New_Database'
     engine = create_engine(database_url)
     cursor = conn2.cursor()
-    cursor.execute(f"INSERT INTO userinfo (username, symptoms, prediction, time) VALUES ('{name}','{symptom_code}','{pred}','{date}') RETURNING *;")
+    cursor.execute(f"INSERT INTO userinfo (username, symptoms, prediction, time) VALUES ('{name}','{symptom_code}','{dis}','{date}') RETURNING *;")
     st.session_state["create_user"]=0
     conn2.commit()
     cursor.close()
@@ -273,10 +279,14 @@ def tree_to_code(tree, feature_names):
                     st.markdown(description_list[st.session_state.second_prediction[0]])
 
                 precution_list=precautionDictionary[st.session_state.present_disease[0]]
-                st.markdown("Take following measures : ")
+                st.markdown(
+                """
+                ---
+                Take following measures : 
+                """)
                 for  i,j in enumerate(precution_list):
                     st.markdown(str(i+1) + ") " + j)
-                st.button("Save result", key = "saveButton", on_click=save_session_activity, args=('Hi!',))
+                st.button("Save result", key = "saveButton", on_click=save_session_activity, args=(st.session_state["current_user"], st.session_state.symptoms_exp, [st.session_state.present_disease [0], st.session_state.second_prediction[0]]))
     if st.session_state.getInitialSymp != 0:
         if "num_days" not in st.session_state:
             st.session_state.num_days = "None"
