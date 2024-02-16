@@ -19,16 +19,13 @@ st.header("----------HealthCare ChatBot----------")
 
 st.sidebar.header("Healthcare Chatbot")
 
-if "current_user" not in st.session_state:
-    st.session_state["current_user"] = c_user
-st.session_state["current_user"] = c_user
 def clear_cache():
     keys = list(st.session_state.keys())
     for key in keys:
         st.session_state.pop(key)
 
 st.button("Reset", key="clear", on_click=clear_cache)
-st.markdown(f'Hello {c_user}, tell me your problem')    
+st.markdown(f'Hello {st.session_state["current_user"]}, tell me your problem')    
 
 if "symptom_list" not in st.session_state:
     st.session_state.symptom_list = []
