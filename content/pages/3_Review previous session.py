@@ -15,23 +15,36 @@ st.header("----------Previous records----------")
 st.sidebar.header("Review records")
 st.sidebar.subheader(f'Welcome {st.session_state["current_user"]}')
 
-conn = st.connection("postgresql", type="sql")
+@st.cache_data
+def getSeverityDict():
+    severityDictionary = dict()
+    with open('./MasterData/Symptom_severity.csv') as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        line_count = 0
+        try:
+            for row in csv_reader:
+                _diction={row[0]:int(row[1])}
+                severityDictionary.update(_diction)
+        except:
+            pass
+    return severityDictionary
 
-db = conn.query(f"SELECT * FROM sessionact WHERE username = '{st.session_state["current_user"]}';")
-
-for x in range(db.shape[0]):
-  st.markdown(f"Date: {db.loc[x]['time']}")
-  st.markdown("Symptoms experienced:"
-  st.write(
+with st.spinner("Retrieving records from DB..."):
+  severityDictionary = getSeverityDictionary()
+  
+  conn = st.connection("postgresql", type="sql")
+  
+  db = conn.query(f"SELECT * FROM sessionact WHERE username = '{st.session_state["current_user"]}';")
+  
+  for x in range(db.shape[0]):
+    st.markdown(f"Date: {db.loc[x]['time']}")
+    st.markdown("Symptoms experienced:")
     symptom_list = list(severityDictionary.keys())
-    se = []
-    for i in symptom_list:
-        if i in sym:
-            se.append('1')
-        else:
-            se.append('0')
-    symptom_code = ''.join(str(e) for e in se)
-    if isinstance(pred, list):
-        dis = '/'.join(e for e in pred)
-    else: 
-        dis = pred
+    symptom_name = []
+    index=0
+    for i in db.loc[x]['symptoms']:
+        if i == 1:
+            symptom_name.append(symptom_list[index])
+        index++
+    st.write(
+          
