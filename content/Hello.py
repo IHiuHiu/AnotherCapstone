@@ -161,7 +161,7 @@ if username:
                 
                 """
             )
-            st.session_state.current_user = username
+            st.session_state['current_user'] = username
 
         elif not authentication_status:
             with info:
