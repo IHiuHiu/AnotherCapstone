@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import streamlit_authenticator as stauth
+import numpy as np
 st.set_page_config(
     page_title="Welcome",
     page_icon="👋",
@@ -33,7 +34,7 @@ def get_user_emails():
     """
     db = conn.query('SELECT * FROM userinfo;', ttl="10m")
     emails = []
-    for user in db.shape[0]:
+    for user in range(db.shape[0]):
         emails.append(db.loc[user]['email'])
     return emails
 
@@ -45,7 +46,7 @@ def get_users():
     """
     db = conn.query('SELECT * FROM userinfo;', ttl="10m")
     usernames = []
-    for user in db.shape[0]:
+    for user in range(db.shape[0]):
         usernames.append(db.loc[user]['username'])
     return usernames
 
@@ -123,7 +124,7 @@ emails = []
 usernames = []
 passwords = []
 
-for user in db.shape[0]:
+for user in range(db.shape[0]):
     emails.append(db.loc[user]['email'])
     usernames.append(db.loc[user]['username'])
     passwords.append(db.loc[user]['password'])
