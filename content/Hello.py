@@ -44,7 +44,7 @@ def get_user_emails():
     return emails_check
 
 
-def get_users():
+def get_usernames():
     """
     Fetch Usernames
     :return List of user usernames:
