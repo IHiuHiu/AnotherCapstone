@@ -33,10 +33,10 @@ def get_user_emails():
     :return List of user emails:
     """
     db = conn.query('SELECT * FROM userinfo;', ttl="10m")
-    emails = []
+    emails_check = []
     for user in range(db.shape[0]):
-        emails.append(db.loc[user]['email'])
-    return emails
+        emails_check.append(db.loc[user]['email'])
+    return emails_check
 
 
 def get_users():
@@ -45,10 +45,10 @@ def get_users():
     :return List of user usernames:
     """
     db = conn.query('SELECT * FROM userinfo;', ttl="10m")
-    usernames = []
+    usernames_check = []
     for user in range(db.shape[0]):
-        usernames.append(db.loc[user]['username'])
-    return usernames
+        usernames_check.append(db.loc[user]['username'])
+    return usernames_check
 
 def validate_email(email):
     """
