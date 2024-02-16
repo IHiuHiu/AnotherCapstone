@@ -21,7 +21,7 @@ st.sidebar.header("Healthcare Chatbot")
 def clear_cache():
     keys = list(st.session_state.keys())
     for key in keys:
-        if key != st.session_state.current_user:
+        if key != st.session_state['current_user']:
             st.session_state.pop(key)
 
 def sign_up():
