@@ -30,7 +30,7 @@ def getSeverityDict():
     return severityDictionary
 
 with st.spinner("Retrieving records from DB..."):
-  severityDictionary = getSeverityDictionary()
+  severityDictionary = getSeverityDict()
   
   conn = st.connection("postgresql", type="sql")
   user = st.session_state["current_user"]
