@@ -43,7 +43,7 @@ with st.spinner("Retrieving records from DB..."):
     symptom_name = []
     index=0
     for i in db.loc[x]['symptoms']:
-        if i == 1:
+        if int(i) == 1:
             symptom_name.append(symptom_list[index])
         index=index+1
     for i in range(len(symptom_name)):
