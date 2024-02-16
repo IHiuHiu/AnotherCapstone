@@ -11,7 +11,7 @@ import csv
 import warnings
 import streamlit as st
 import streamlit_authenticator as stauth
-from Hello import st.session_state['current_user'] as c_user
+from Hello import c_user
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 st.set_page_config(page_title="Heathcare Chatbot", page_icon="🤖")
