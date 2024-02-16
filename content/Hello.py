@@ -157,7 +157,7 @@ if username:
                 
                 """
             )
-            if current_user not in st.session_state:
+            if "current_user" not in st.session_state:
                 st.session_state.current_user = username
 
         elif not authentication_status:
