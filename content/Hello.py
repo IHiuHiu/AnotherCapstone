@@ -20,29 +20,21 @@ conn = st.connection("postgresql", type="sql")
 
 # Perform query.
 #conn.query('\x on;')
-db = conn.query('SELECT * FROM userinfo;', ttl="10m")
 
 # Print results.
 def insert_user(username, email, password):
     date_joined = str(datetime.datetime.now())
     conn.query('INSERT INTO userinfo (username, email, password, datejoin) VALUES ('+username+' ,'+email+' ,'+password+' ,'+date_joined+');')
 
-def fetch_users():
-    """
-    Fetch Users
-    :return Dictionary of Users:
-    """
-    return db.items
-
 def get_user_emails():
     """
     Fetch User Emails
     :return List of user emails:
     """
-    users = db.items
+    db = conn.query('SELECT * FROM userinfo;', ttl="10m")
     emails = []
-    for user in users.items:
-        emails.append(user['key'])
+    for user in db.shape[0]:
+        emails.append(db.loc[user]['email'])
     return emails
 
 
@@ -51,10 +43,10 @@ def get_users():
     Fetch Usernames
     :return List of user usernames:
     """
-    users = db.fetch()
+    db = conn.query('SELECT * FROM userinfo;', ttl="10m")
     usernames = []
-    for user in users.items:
-        usernames.append(user['key'])
+    for user in db.shape[0]:
+        usernames.append(db.loc[user]['username'])
     return usernames
 
 def validate_email(email):
@@ -126,15 +118,15 @@ def sign_up():
             st.form_submit_button('Sign Up')
 
 #try:
-users = fetch_users()
+db = conn.query('SELECT * FROM userinfo;', ttl="10m")
 emails = []
 usernames = []
 passwords = []
 
-for user in users:
-    emails.append(user['key'])
-    usernames.append(user['username'])
-    passwords.append(user['password'])
+for user in db.shape[0]:
+    emails.append(db.loc[user]['email'])
+    usernames.append(db.loc[user]['username'])
+    passwords.append(db.loc[user]['password'])
 
 credentials = {'usernames': {}}
 for index in range(len(emails)):
