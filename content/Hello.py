@@ -49,7 +49,7 @@ def insert_user(username, email, password):
             conn2.commit()
             cursor.close()
             conn2.close()
-    st.success('Account created successfully!!')
+    st.success('Account created successfully!! Please refresh the page to sign in!')
 
 
 def get_user_emails():
