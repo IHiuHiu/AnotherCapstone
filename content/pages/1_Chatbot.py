@@ -27,16 +27,8 @@ def clear_cache():
     for key in keys:
         st.session_state.pop(key)
 
-def sign_up():
-    with st.form(key='signup', clear_on_submit=True):
-        st.subheader(':green[Sign Up]')
-        email = st.text_input('Email', placeholder='Enter Your Email')
-        username = st.text_input('Username', placeholder='Enter Your Username')
-        password1 = st.text_input('Password', placeholder='Enter Your Password')
-        password2 = st.text_input('Confirm Password', placeholder='Re-enter Your Password')
-
 st.button("Reset", key="clear", on_click=clear_cache)
-    
+st.markdown(f'Hello {c_user}, tell me your problem')    
 
 if "symptom_list" not in st.session_state:
     st.session_state.symptom_list = []
