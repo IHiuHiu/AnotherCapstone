@@ -32,21 +32,23 @@ conn = st.connection("postgresql", type="sql")
 # Print results.
 def insert_user(username, email, password):
     with st.spinner("Please wait for DB connection..."):
-        date_joined = datetime.datetime.now()
-        date = str(date_joined.year) + '-0' + str(date_joined.month) + '-' + str(date_joined.day)
-        conn2 = psycopg2.connect(
-            host = "34.87.103.138",
-            database = "New_Database",
-            user = "streamlit",
-            password = "123789",
-            port = 5432)
-        database_url = f'postgresql+psycopg2://streamlit:123789@34.87.103.138/New_Database'
-        engine = create_engine(database_url)
-        cursor = conn2.cursor()
-        cursor.execute(f"INSERT INTO userinfo (username, email, password, datejoin) VALUES ('{username}','{email}','{password}','{date}') RETURNING *;")
-        conn2.commit()
-        cursor.close()
-        conn2.close()
+        if st.session_state["create_user"]!=0
+            date_joined = datetime.datetime.now()
+            date = str(date_joined.year) + '-0' + str(date_joined.month) + '-' + str(date_joined.day)
+            conn2 = psycopg2.connect(
+                host = "34.87.103.138",
+                database = "New_Database",
+                user = "streamlit",
+                password = "123789",
+                port = 5432)
+            database_url = f'postgresql+psycopg2://streamlit:123789@34.87.103.138/New_Database'
+            engine = create_engine(database_url)
+            cursor = conn2.cursor()
+            cursor.execute(f"INSERT INTO userinfo (username, email, password, datejoin) VALUES ('{username}','{email}','{password}','{date}') RETURNING *;")
+            st.session_state["create_user"]=0
+            conn2.commit()
+            cursor.close()
+            conn2.close()
     st.success('Account created successfully!!')
 
 
@@ -116,6 +118,8 @@ def sign_up():
                                 if len(password1) >= 6:
                                     if password1 == password2:
                                         # Add User to DB
+                                        if "create_user" not in st.session_state:
+                                            st.session_state["create_user"]=1
                                         insert_user(username, email, password1)
                                     else:
                                         st.warning('Passwords Do Not Match')
