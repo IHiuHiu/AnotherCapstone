@@ -17,6 +17,10 @@ st.markdown(
 """
 )
 
+if 'current_user' not in st.session_state:
+    st.session_state['current_user'] = 0 #or whatever default
+current_user = st.session_state['current_user']
+
 conn = st.connection("postgresql", type="sql")
 
 # Perform query.
@@ -157,8 +161,7 @@ if username:
                 
                 """
             )
-            if "current_user" not in st.session_state:
-                st.session_state.current_user = username
+            st.session_state.current_user = username
 
         elif not authentication_status:
             with info:
