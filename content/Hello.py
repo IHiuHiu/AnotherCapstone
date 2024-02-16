@@ -100,7 +100,7 @@ def sign_up():
                                 if len(password1) >= 6:
                                     if password1 == password2:
                                         # Add User to DB
-                                        insert_user(email, username, password1)
+                                        insert_user(username, email, password1)
                                         st.success('Account created successfully!!')
                                         st.balloons()
                                     else:
