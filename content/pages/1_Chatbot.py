@@ -11,6 +11,7 @@ import csv
 import warnings
 import streamlit as st
 import streamlit_authenticator as stauth
+from Hello import st.session_state['current_user'] as c_user
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 st.set_page_config(page_title="Heathcare Chatbot", page_icon="🤖")
@@ -18,11 +19,13 @@ st.header("----------HealthCare ChatBot----------")
 
 st.sidebar.header("Healthcare Chatbot")
 
+if "current_user" not in st.session_state:
+    st.session_state["current_user"] = c_user
+st.session_state["current_user"] = c_user
 def clear_cache():
     keys = list(st.session_state.keys())
     for key in keys:
-        if key != st.session_state['current_user']:
-            st.session_state.pop(key)
+        st.session_state.pop(key)
 
 def sign_up():
     with st.form(key='signup', clear_on_submit=True):
