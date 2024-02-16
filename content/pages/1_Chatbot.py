@@ -155,7 +155,7 @@ def save_session_activity(name, sym, pred):
             se.append('1')
         else:
             se.append('0')
-    symptom_code = ' '.join(str(e) for e in se)
+    symptom_code = ''.join(str(e) for e in se)
     if isinstance(pred, list):
         dis = '/'.join(e for e in pred)
     else: 
