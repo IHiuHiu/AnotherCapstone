@@ -230,7 +230,13 @@ def tree_to_code(tree, feature_names):
                 st.markdown(question)
                 st.button("Yes", key = "yesButton", on_click=submit)
                 st.button("No", key = "noButton", on_click=submit_no)
-                    
+            st.markdown(
+                """
+                ---
+                Here is my prediction, take it with a grain of salt please
+                
+                """
+            )        
             if st.session_state.count >= len(st.session_state.symptoms_given):            
                 st.session_state.second_prediction = sec_predict(st.session_state.symptoms_exp)
 
