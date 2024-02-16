@@ -50,7 +50,7 @@ with st.spinner("Retrieving records from DB..."):
         st.write(f"{i+1}/ {symptom_name[i]}")
     st.markdown(f"Prediction: ")
     prediction = db.loc[x]['prediction'].split('/')
-    if prediction[0] = prediction[1]:
+    if prediction[0] == prediction[1]:
       st.write(f"{prediction[0]}")
     else:
       st.write(f"{prediction[0]} or {prediction[1]}")
