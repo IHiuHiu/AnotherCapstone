@@ -33,8 +33,8 @@ with st.spinner("Retrieving records from DB..."):
   severityDictionary = getSeverityDictionary()
   
   conn = st.connection("postgresql", type="sql")
-  
-  db = conn.query(f"SELECT * FROM sessionact WHERE username = '{st.session_state["current_user"]}';")
+  user = st.session_state["current_user"]
+  db = conn.query(f"SELECT * FROM sessionact WHERE username = '{user}';")
   
   for x in range(db.shape[0]):
     st.markdown(f"Date: {db.loc[x]['time']}")
