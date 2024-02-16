@@ -27,14 +27,13 @@ def insert_user(username, email, password):
     date_joined = str(datetime.datetime.now())
     conn.query('INSERT INTO userinfo (username, email, password, datejoin) VALUES ('+username+' ,'+email+' ,'+password+' ,'+date_joined+');')
 
-def fetch_userinfo():
+def fetch_users():
     """
     Fetch Users
     :return Dictionary of Users:
     """
-    username = db.get('username')
-    email = db.get('email')
-    password = db.get('password')
+    db.fetch()
+    return users.items
 
 def get_user_emails():
     """
