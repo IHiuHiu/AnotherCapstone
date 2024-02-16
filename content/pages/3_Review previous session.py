@@ -54,4 +54,9 @@ with st.spinner("Retrieving records from DB..."):
       st.write(f"{prediction[0]}")
     else:
       st.write(f"{prediction[0]} or {prediction[1]}")
+    st.markdown(
+    """
+    ---
+    """
+    )
           
