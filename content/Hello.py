@@ -44,6 +44,9 @@ def insert_user(username, email, password):
         engine = create_engine(database_url)
         cursor = conn2.cursor()
         cursor.execute(f"INSERT INTO userinfo (username, email, password, datejoin) VALUES ('{username}','{email}','{password}','{date}') RETURNING *;")
+        conn2.commit()
+        cursor.close()
+        conn2.close()
     st.success('Account created successfully!!')
 
 
