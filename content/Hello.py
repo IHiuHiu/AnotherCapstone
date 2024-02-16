@@ -87,8 +87,8 @@ def sign_up():
         st.subheader(':green[Sign Up]')
         email = st.text_input(':blue[Email]', placeholder='Enter Your Email')
         username = st.text_input(':blue[Username]', placeholder='Enter Your Username')
-        password1 = st.text_input(':blue[Password]', placeholder='Enter Your Password', type='password')
-        password2 = st.text_input(':blue[Confirm Password]', placeholder='Confirm Your Password', type='password')
+        password1 = st.text_input(':blue[Password]', placeholder='Enter Your Password')
+        password2 = st.text_input(':blue[Confirm Password]', placeholder='Confirm Your Password')
 
         if email:
             if validate_email(email):
