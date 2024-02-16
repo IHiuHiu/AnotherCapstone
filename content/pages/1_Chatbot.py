@@ -20,6 +20,7 @@ st.sidebar.header("Healthcare Chatbot")
 
 def clear_cache():
     keys = list(st.session_state.keys())
+    keys.remove(st.session_state.current_user)
     for key in keys:
         st.session_state.pop(key)
 
