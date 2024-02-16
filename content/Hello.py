@@ -32,7 +32,7 @@ conn = st.connection("postgresql", type="sql")
 # Print results.
 def insert_user(username, email, password):
     with st.spinner("Please wait for DB connection..."):
-        if st.session_state["create_user"]!=0
+        if st.session_state["create_user"]!=0:
             date_joined = datetime.datetime.now()
             date = str(date_joined.year) + '-0' + str(date_joined.month) + '-' + str(date_joined.day)
             conn2 = psycopg2.connect(
