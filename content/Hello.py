@@ -34,10 +34,10 @@ def insert_user(username, email, password):
         date_joined = datetime.datetime.now()
         date = str(date_joined.year) + '-0' + str(date_joined.month) + '-' + str(date_joined.day)
         conn2 = psycopg2.connect(
-        host = "34.87.103.138"
-        database = "New_Database"
-        username = "streamlit"
-        password = "123789"
+            host = "34.87.103.138"
+            database = "New_Database"
+            username = "streamlit"
+            password = "123789"
         )
         database_url = f'postgresql+psycopg2://streamlit:123789@34.87.103.138/New_Database'
         engine = create_engine(database_url)
