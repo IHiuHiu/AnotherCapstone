@@ -46,7 +46,7 @@ with st.spinner("Retrieving records from DB..."):
         if i == 1:
             symptom_name.append(symptom_list[index])
         index=index+1
-    for i in range(symptom_name):
+    for i in range(len(symptom_name)):
         st.write(f"{i+1}/ {symptom_name[i]}")
     st.markdown(f"Prediction: ")
     prediction = db.loc[x]['prediction'].split('/')
