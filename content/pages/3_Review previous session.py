@@ -1,12 +1,6 @@
 import re
 import pandas as pd
-import pyttsx3
-from sklearn import preprocessing
-from sklearn.tree import DecisionTreeClassifier,_tree
 import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.model_selection import cross_val_score
-from sklearn.svm import SVC
 import csv
 import warnings
 import streamlit as st
@@ -20,3 +14,12 @@ st.header("----------Previous records----------")
 
 st.sidebar.header("Review records")
 st.sidebar.subheader(f'Welcome {st.session_state["current_user"]}')
+
+conn = st.connection("postgresql", type="sql")
+
+db = conn.query(f"SELECT * FROM sessionact WHERE username = '{st.session_state["current_user"]}';")
+
+for x in range(db.shape[0]):
+  st.markdown(f"Date: {db.loc[x]['time']}")
+  st.markdown("Symptoms experienced:"
+  st.write(
