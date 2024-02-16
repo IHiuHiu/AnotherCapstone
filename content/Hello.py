@@ -32,15 +32,14 @@ def fetch_users():
     Fetch Users
     :return Dictionary of Users:
     """
-    db.fetch()
-    return users.items
+    return db.items
 
 def get_user_emails():
     """
     Fetch User Emails
     :return List of user emails:
     """
-    users = db.fetch()
+    users = db.items
     emails = []
     for user in users.items:
         emails.append(user['key'])
