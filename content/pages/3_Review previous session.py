@@ -15,8 +15,8 @@ import datetime
 import psycopg2
 from sqlalchemy import create_engine
 
-st.set_page_config(page_title="Review previous record", page_icon="")
-st.header("----------HealthCare ChatBot----------")
+st.set_page_config(page_title="Review previous record", page_icon="🔍")
+st.header("----------Previous records----------")
 
-st.sidebar.header("Healthcare Chatbot")
+st.sidebar.header("Review records")
 st.sidebar.subheader(f'Welcome {st.session_state["current_user"]}')
