@@ -59,27 +59,4 @@ with st.spinner("Retrieving records from DB..."):
     ---
     """
     )
-
-    st.markdown(f"Date: {db.loc[1]['time']}")
-    st.markdown("Symptoms experienced:")
-    symptom_list = list(severityDictionary.keys())
-    symptom_name = []
-    index=0
-    for i in db.loc[1]['symptoms']:
-        if int(i) == 1:
-            symptom_name.append(symptom_list[index])
-        index=index+1
-    for i in range(len(symptom_name)):
-        st.write(f"   {i+1}/ {symptom_name[i]}")
-    st.markdown(f"Prediction: ")
-    prediction = db.loc[1]['prediction'].split('/')
-    if prediction[0] == prediction[1]:
-      st.write(f"   {prediction[0]}")
-    else:
-      st.write(f"   {prediction[0]} or {prediction[1]}")
-    st.markdown(
-    """
-    ---
-    """
-    )
           
