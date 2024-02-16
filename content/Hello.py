@@ -36,8 +36,9 @@ def insert_user(username, email, password):
         conn2 = psycopg2.connect(
             host = "34.87.103.138",
             database = "New_Database",
-            username = "streamlit",
-            password = "123789")
+            user = "streamlit",
+            password = "123789",
+            port = 5432)
         database_url = f'postgresql+psycopg2://streamlit:123789@34.87.103.138/New_Database'
         engine = create_engine(database_url)
         cursor = conn2.cursor()
