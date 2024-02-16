@@ -177,7 +177,7 @@ if username:
             st.markdown(
                 """
                 ---
-                Created with ❤️ by SnakeByte
+                Created with ❤️ by HiuHiu
                 
                 """
             )
