@@ -32,7 +32,7 @@ conn = st.connection("postgresql", type="sql")
 def insert_user(username, email, password):
     date_joined = datetime.datetime.now()
     date = str(date_joined.year) + '-' + str(date_joined.month) + '-' + str(date_joined.day)
-    conn.query('INSERT INTO userinfo (username, email, password, datejoin) VALUES (" ' +username+'" ,"'+email+'" ,"'+password+' ","'+date+"');')
+    conn.query('INSERT INTO userinfo (username, email, password, datejoin) VALUES (" ' +username+'" ,"'+email+'" ,"'+password+' ","'+date+'");')
 
 def get_user_emails():
     """
