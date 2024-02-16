@@ -145,6 +145,30 @@ def sec_predict(symptoms_exp):
       input_vector[[symptoms_dict[item]]] = 1
     return rf_clf.predict([input_vector])
 
+def save_session_activity(name, sym, pred, time):
+    symptom_list = list(severityDictionary.keys())
+    se = []
+    for i in symptom_list:
+        if i in sym:
+            se.append('1')
+        else:
+            se.append('0')
+    symptom_code' '.join(str(e) for e in se)
+    conn2 = psycopg2.connect(
+        host = "34.87.103.138",
+        database = "New_Database",
+        user = "streamlit",
+        password = "123789",
+        port = 5432)
+    database_url = f'postgresql+psycopg2://streamlit:123789@34.87.103.138/New_Database'
+    engine = create_engine(database_url)
+    cursor = conn2.cursor()
+    cursor.execute(f"INSERT INTO userinfo (username, symptoms, prediction, time) VALUES ('{name}','{symptom_code}','{pred}','{date}') RETURNING *;")
+    st.session_state["create_user"]=0
+    conn2.commit()
+    cursor.close()
+    conn2.close()
+
 def print_disease(node):
     node = node[0]
     val  = node.nonzero()
@@ -252,6 +276,7 @@ def tree_to_code(tree, feature_names):
                 st.markdown("Take following measures : ")
                 for  i,j in enumerate(precution_list):
                     st.markdown(str(i+1) + ") " + j)
+                st.button("Save result", key = "saveButton", on_click=save_session_activity, args=('Hi!',))
     if st.session_state.getInitialSymp != 0:
         if "num_days" not in st.session_state:
             st.session_state.num_days = "None"
