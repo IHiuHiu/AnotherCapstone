@@ -22,12 +22,12 @@ st.header("----------HealthCare ChatBot----------")
 st.sidebar.header("Healthcare Chatbot")
 st.sidebar.subheader(f'Welcome {st.session_state["current_user"]}')
 
-def clear_cache():
-    keys = list(st.session_state.keys())
-    for key in keys:
-        st.session_state.pop(key)
+#def clear_cache():
+#    keys = list(st.session_state.keys())
+#    for key in keys:
+ #       st.session_state.pop(key)
 
-st.button("Reset", key="clear", on_click=clear_cache)
+#st.button("Reset", key="clear", on_click=clear_cache)
 st.markdown(f'Hello {st.session_state["current_user"]}, tell me your problem')    
 
 if "symptom_list" not in st.session_state:
