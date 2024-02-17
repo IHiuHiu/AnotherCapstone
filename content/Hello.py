@@ -184,12 +184,15 @@ if username:
 
         elif not authentication_status:
             with info:
+                st.rerun()
                 st.error('Incorrect Password or username')
         else:
             with info:
+                st.rerun()
                 st.warning('Please feed in your credentials')
     else:
         with info:
+            st.rerun()
             st.warning('Username does not exist, Please Sign up')
 
 
