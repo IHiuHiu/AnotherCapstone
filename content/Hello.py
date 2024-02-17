@@ -145,6 +145,8 @@ db = conn.query('SELECT * FROM userinfo;')
 emails = []
 usernames = []
 passwords = []
+if "rerun_state" not in st.session_state:
+    st.session_state["rerun_state"] = 0
 
 for user in range(db.shape[0]):
     emails.append(db.loc[user]['email'])
@@ -184,16 +186,26 @@ if username:
 
         elif not authentication_status:
             with info:
-                st.rerun()
-                st.error('Incorrect Password or username')
+                if st.session_state["rerun_state"] == 0:
+                    st.session_state["rerun_state"] = 1
+                    st.rerun()
+                else: 
+                    st.warning('Wrong username or password')
+                
         else:
             with info:
-                st.rerun()
-                st.warning('Please feed in your credentials')
+                if st.session_state["rerun_state"] == 0:
+                    st.session_state["rerun_state"] = 1
+                    st.rerun()
+                else: 
+                    st.warning('Please feed in your credentials')
     else:
         with info:
-            st.rerun()
-            st.warning('Username does not exist, Please Sign up')
+            if st.session_state["rerun_state"] == 0:
+                st.session_state["rerun_state"] = 1
+                st.rerun()
+            else: 
+                st.warning('Username does not exist, Please Sign up')
 
 
 #except:
