@@ -25,10 +25,6 @@ if 'current_user' not in st.session_state:
     st.session_state['current_user'] = 0 #or whatever default
 current_user = st.session_state['current_user']
 
-conn = st.connection("postgresql", type="sql")
-# Perform query.
-#conn.query('\x on;')
-
 # Print results.
 def insert_user(username, email, password):
     with st.spinner("Please wait for DB connection..."):
@@ -49,6 +45,7 @@ def insert_user(username, email, password):
             conn2.commit()
             cursor.close()
             conn2.close()
+    db = conn.query('SELECT * FROM userinfo;', ttl="10m")
     st.success('Account created successfully!! Please refresh the page to sign in!')
 
 
@@ -143,7 +140,8 @@ def sign_up():
             st.form_submit_button('Sign Up')
 
 #try:
-db = conn.query('SELECT * FROM userinfo;', ttl="10m")
+conn = st.connection("postgresql", type="sql")
+db = conn.query('SELECT * FROM userinfo;')
 emails = []
 usernames = []
 passwords = []
